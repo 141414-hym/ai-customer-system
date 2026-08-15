@@ -1,0 +1,30 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: aiagent
+  ai:
+    dashscope:
+      api-key: ${AI_DASHSCOPE_API_KEY:}
+      chat:
+        options:
+          model: qwen-max
+          temperature: 0.1
+
+assistant:
+  app:
+    name: aiagent
+    default-locale: zh-CN
+  rag:
+    top-k: 5
+    similarity-threshold: 0.6
+  graph:
+    max-iterations: 4
+  memory:
+    enabled: true
+
+logging:
+  level:
+    com.aiagent: DEBUG
+    com.alibaba.cloud.ai: INFO

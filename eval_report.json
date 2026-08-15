@@ -1,0 +1,154 @@
+{
+  "测试集名称": "aiagent 内置评估集",
+  "测试时间": "2026-07-08 18:43:05",
+  "总用例数": 10,
+  "路由准确率": "90.0%",
+  "RAG命中率": "85.7%",
+  "RAG噪音率": "0.0%",
+  "混淆矩阵": {
+    "business_tool": {
+      "business_tool": 1,
+      "clarify": 0,
+      "faq": 0,
+      "human_handoff": 0,
+      "knowledge_base": 0
+    },
+    "clarify": {
+      "business_tool": 0,
+      "clarify": 1,
+      "faq": 0,
+      "human_handoff": 0,
+      "knowledge_base": 0
+    },
+    "human_handoff": {
+      "business_tool": 0,
+      "clarify": 0,
+      "faq": 0,
+      "human_handoff": 1,
+      "knowledge_base": 0
+    },
+    "knowledge_base": {
+      "business_tool": 0,
+      "clarify": 0,
+      "faq": 1,
+      "human_handoff": 0,
+      "knowledge_base": 6
+    }
+  },
+  "详细结果": [
+    {
+      "用例ID": "TC-001",
+      "期望路由": "knowledge_base",
+      "实际路由": "knowledge_base",
+      "路由匹配": true,
+      "RAG命中": [
+        "G6",
+        "19.99"
+      ],
+      "RAG噪音": [],
+      "错误": null
+    },
+    {
+      "用例ID": "TC-002",
+      "期望路由": "knowledge_base",
+      "实际路由": "knowledge_base",
+      "路由匹配": true,
+      "RAG命中": [
+        "贷款",
+        "申请"
+      ],
+      "RAG噪音": [],
+      "错误": null
+    },
+    {
+      "用例ID": "TC-003",
+      "期望路由": "knowledge_base",
+      "实际路由": "knowledge_base",
+      "路由匹配": true,
+      "RAG命中": [
+        "交付",
+        "周期",
+        "周"
+      ],
+      "RAG噪音": [],
+      "错误": null
+    },
+    {
+      "用例ID": "TC-004",
+      "期望路由": "knowledge_base",
+      "实际路由": "faq",
+      "路由匹配": false,
+      "RAG命中": [
+        "退订",
+        "订金"
+      ],
+      "RAG噪音": [],
+      "错误": null
+    },
+    {
+      "用例ID": "TC-005",
+      "期望路由": "knowledge_base",
+      "实际路由": "knowledge_base",
+      "路由匹配": true,
+      "RAG命中": [
+        "G6",
+        "优惠",
+        "限时"
+      ],
+      "RAG噪音": [],
+      "错误": null
+    },
+    {
+      "用例ID": "TC-006",
+      "期望路由": "human_handoff",
+      "实际路由": "human_handoff",
+      "路由匹配": true,
+      "RAG命中": null,
+      "RAG噪音": [],
+      "错误": null
+    },
+    {
+      "用例ID": "TC-007",
+      "期望路由": "clarify",
+      "实际路由": "clarify",
+      "路由匹配": true,
+      "RAG命中": null,
+      "RAG噪音": [],
+      "错误": null
+    },
+    {
+      "用例ID": "TC-008",
+      "期望路由": "knowledge_base",
+      "实际路由": "knowledge_base",
+      "路由匹配": true,
+      "RAG命中": [
+        "G6",
+        "贷款",
+        "提车",
+        "订金"
+      ],
+      "RAG噪音": [],
+      "错误": null
+    },
+    {
+      "用例ID": "TC-009",
+      "期望路由": "knowledge_base",
+      "实际路由": "knowledge_base",
+      "路由匹配": true,
+      "RAG命中": [
+        "优惠"
+      ],
+      "RAG噪音": [],
+      "错误": null
+    },
+    {
+      "用例ID": "TC-010",
+      "期望路由": "business_tool",
+      "实际路由": "business_tool",
+      "路由匹配": true,
+      "RAG命中": null,
+      "RAG噪音": [],
+      "错误": null
+    }
+  ]
+}

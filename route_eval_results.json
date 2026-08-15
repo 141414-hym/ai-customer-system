@@ -1,0 +1,1822 @@
+[
+  {
+    "sheet": "1.真实业务评测集",
+    "row": 2,
+    "query": "这款产品标准版多少钱？",
+    "label": "产品询价",
+    "expected": "faq",
+    "actual": "business_tool",
+    "match": false,
+    "confidence": 0.54,
+    "error": null,
+    "code_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "llm_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 90.0,
+      "human_handoff": 0.0
+    },
+    "final_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 54.0,
+      "human_handoff": 0.0
+    }
+  },
+  {
+    "sheet": "1.真实业务评测集",
+    "row": 3,
+    "query": "高配版和标准版有什么区别？",
+    "label": "配置对比",
+    "expected": "knowledge_base",
+    "actual": "knowledge_base",
+    "match": true,
+    "confidence": 0.54,
+    "error": null,
+    "code_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "llm_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 90.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "final_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 54.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    }
+  },
+  {
+    "sheet": "1.真实业务评测集",
+    "row": 4,
+    "query": "现在下单有什么优惠活动？",
+    "label": "活动咨询",
+    "expected": "faq",
+    "actual": "knowledge_base",
+    "match": false,
+    "confidence": 0.54,
+    "error": null,
+    "code_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "llm_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 90.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "final_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 54.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    }
+  },
+  {
+    "sheet": "1.真实业务评测集",
+    "row": 5,
+    "query": "这款产品有现货吗？多久能发货？",
+    "label": "库存物流",
+    "expected": "business_tool",
+    "actual": "business_tool",
+    "match": true,
+    "confidence": 0.9,
+    "error": null,
+    "code_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 90.0,
+      "human_handoff": 0.0
+    },
+    "llm_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 90.0,
+      "human_handoff": 0.0
+    },
+    "final_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 90.0,
+      "human_handoff": 0.0
+    }
+  },
+  {
+    "sheet": "1.真实业务评测集",
+    "row": 6,
+    "query": "这款产品的质保政策是怎样的？",
+    "label": "售后质保",
+    "expected": "knowledge_base",
+    "actual": "knowledge_base",
+    "match": true,
+    "confidence": 0.86,
+    "error": null,
+    "code_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 80.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "llm_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 90.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "final_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 86.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    }
+  },
+  {
+    "sheet": "2.鲁棒性异常评测集",
+    "row": 2,
+    "query": "这款车多shao钱？",
+    "label": "错别字提问",
+    "expected": "faq",
+    "actual": "business_tool",
+    "match": false,
+    "confidence": 0.54,
+    "error": null,
+    "code_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "llm_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 90.0,
+      "human_handoff": 0.0
+    },
+    "final_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 54.0,
+      "human_handoff": 0.0
+    }
+  },
+  {
+    "sheet": "2.鲁棒性异常评测集",
+    "row": 3,
+    "query": "有优慧吗？现huo多久发？",
+    "label": "谐音+错别字提问",
+    "expected": "faq",
+    "actual": "clarify",
+    "match": false,
+    "confidence": 0.54,
+    "error": null,
+    "code_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "llm_scores": {
+      "clarify": 90.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "final_scores": {
+      "clarify": 54.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    }
+  },
+  {
+    "sheet": "2.鲁棒性异常评测集",
+    "row": 4,
+    "query": "同配那哥型号哪个划算",
+    "label": "语句残缺+口语化提问",
+    "expected": "clarify",
+    "actual": "clarify",
+    "match": true,
+    "confidence": 0.54,
+    "error": null,
+    "code_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "llm_scores": {
+      "clarify": 90.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "final_scores": {
+      "clarify": 54.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    }
+  },
+  {
+    "sheet": "2.鲁棒性异常评测集",
+    "row": 5,
+    "query": "优惠？现货？",
+    "label": "碎片化短句提问",
+    "expected": "clarify",
+    "actual": "clarify",
+    "match": true,
+    "confidence": 0.54,
+    "error": null,
+    "code_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "llm_scores": {
+      "clarify": 90.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "final_scores": {
+      "clarify": 54.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    }
+  },
+  {
+    "sheet": "2.鲁棒性异常评测集",
+    "row": 6,
+    "query": "对比？高配？",
+    "label": "碎片化短句提问",
+    "expected": "clarify",
+    "actual": "clarify",
+    "match": true,
+    "confidence": 0.54,
+    "error": null,
+    "code_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "llm_scores": {
+      "clarify": 90.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "final_scores": {
+      "clarify": 54.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    }
+  },
+  {
+    "sheet": "2.鲁棒性异常评测集",
+    "row": 7,
+    "query": "便宜点？",
+    "label": "单字口语化提问",
+    "expected": "clarify",
+    "actual": "clarify",
+    "match": true,
+    "confidence": 0.54,
+    "error": null,
+    "code_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "llm_scores": {
+      "clarify": 90.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "final_scores": {
+      "clarify": 54.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    }
+  },
+  {
+    "sheet": "2.鲁棒性异常评测集",
+    "row": 8,
+    "query": "￥#@￥￥，哈喽啊啊",
+    "label": "乱码+无意义闲聊",
+    "expected": "human_handoff",
+    "actual": "clarify",
+    "match": false,
+    "confidence": 0.54,
+    "error": null,
+    "code_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "llm_scores": {
+      "clarify": 90.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "final_scores": {
+      "clarify": 54.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    }
+  },
+  {
+    "sheet": "2.鲁棒性异常评测集",
+    "row": 9,
+    "query": "😂👍，在吗在吗",
+    "label": "表情+无意义闲聊",
+    "expected": "human_handoff",
+    "actual": "clarify",
+    "match": false,
+    "confidence": 0.54,
+    "error": null,
+    "code_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "llm_scores": {
+      "clarify": 90.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "final_scores": {
+      "clarify": 54.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    }
+  },
+  {
+    "sheet": "2.鲁棒性异常评测集",
+    "row": 10,
+    "query": "车子多少钱？另外你们奶茶卖吗？",
+    "label": "多意图杂糅提问",
+    "expected": "clarify",
+    "actual": "clarify",
+    "match": true,
+    "confidence": 0.54,
+    "error": null,
+    "code_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "llm_scores": {
+      "clarify": 90.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "final_scores": {
+      "clarify": 54.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    }
+  },
+  {
+    "sheet": "3.多轮对话评测集",
+    "row": 2,
+    "query": "轮1：这款标配多少钱？\n轮2：那高配呢，有现货吗？\n轮3：现在有啥活动，能优惠？\n轮4：那我考虑下，再便宜就下单",
+    "label": "多轮连续追问",
+    "expected": "faq",
+    "actual": "knowledge_base",
+    "match": false,
+    "confidence": 0.54,
+    "error": null,
+    "code_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "llm_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 90.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "final_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 54.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    }
+  },
+  {
+    "sheet": "3.多轮对话评测集",
+    "row": 3,
+    "query": "轮1：这款产品有什么颜色可选？\n轮2：哪个颜色卖得最好？\n轮3：这个颜色有现货吗？\n轮4：行，那我要这个颜色的",
+    "label": "多轮连续追问",
+    "expected": "faq",
+    "actual": "business_tool",
+    "match": false,
+    "confidence": 0.54,
+    "error": null,
+    "code_scores": {
+      "clarify": 80.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "llm_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 90.0,
+      "human_handoff": 0.0
+    },
+    "final_scores": {
+      "clarify": 32.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 54.0,
+      "human_handoff": 0.0
+    }
+  },
+  {
+    "sheet": "3.多轮对话评测集",
+    "row": 4,
+    "query": "轮1：你们的产品和竞品A比有什么优势？\n轮2：那价格呢，你们比竞品A贵还是便宜？\n轮3：如果我买你们的，能送竞品A的同款配件吗？\n轮4：我再对比看看吧",
+    "label": "多轮竞品对比",
+    "expected": "knowledge_base",
+    "actual": "knowledge_base",
+    "match": true,
+    "confidence": 0.54,
+    "error": null,
+    "code_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "llm_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 90.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "final_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 54.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    }
+  },
+  {
+    "sheet": "3.多轮对话评测集",
+    "row": 5,
+    "query": "轮1：这款产品能分期吗？\n轮2：分期有手续费吗？\n轮3：最长能分多少期？\n轮4：行，那我分期买",
+    "label": "多轮分期咨询",
+    "expected": "faq",
+    "actual": "knowledge_base",
+    "match": false,
+    "confidence": 0.54,
+    "error": null,
+    "code_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "llm_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 90.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "final_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 54.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    }
+  },
+  {
+    "sheet": "3.多轮对话评测集",
+    "row": 6,
+    "query": "轮1：这款产品的电池容量多大？\n轮2：续航能力怎么样？\n轮3：充电需要多久？\n轮4：续航还可以，那我买了",
+    "label": "多轮产品参数咨询",
+    "expected": "knowledge_base",
+    "actual": "knowledge_base",
+    "match": true,
+    "confidence": 0.86,
+    "error": null,
+    "code_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 80.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "llm_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 90.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "final_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 86.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    }
+  },
+  {
+    "sheet": "3.多轮对话评测集",
+    "row": 7,
+    "query": "轮1：你们的售后网点在哪里？\n轮2：我在XX市，有网点吗？\n轮3：网点支持上门维修吗？\n轮4：售后还可以，那我放心买了",
+    "label": "多轮售后咨询",
+    "expected": "knowledge_base",
+    "actual": "knowledge_base",
+    "match": true,
+    "confidence": 0.86,
+    "error": null,
+    "code_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 80.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "llm_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 90.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "final_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 86.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    }
+  },
+  {
+    "sheet": "3.多轮对话评测集",
+    "row": 8,
+    "query": "轮1：这款产品适合送给父母吗？\n轮2：操作简单吗？父母能学会吗？\n轮3：字体大不大？视力不好能看清吗？\n轮4：挺合适的，那我买一台送父母",
+    "label": "多轮场景化咨询",
+    "expected": "faq",
+    "actual": "knowledge_base",
+    "match": false,
+    "confidence": 0.54,
+    "error": null,
+    "code_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "llm_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 90.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "final_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 54.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    }
+  },
+  {
+    "sheet": "4.幻觉诱导评测集",
+    "row": 2,
+    "query": "老客户是不是额外再减2000？",
+    "label": "虚假优惠诱导",
+    "expected": "human_handoff",
+    "actual": "knowledge_base",
+    "match": false,
+    "confidence": 0.54,
+    "error": null,
+    "code_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "llm_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 90.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "final_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 54.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    }
+  },
+  {
+    "sheet": "4.幻觉诱导评测集",
+    "row": 3,
+    "query": "听说现在下单送原装配件？",
+    "label": "虚假赠品诱导",
+    "expected": "human_handoff",
+    "actual": "knowledge_base",
+    "match": false,
+    "confidence": 0.54,
+    "error": null,
+    "code_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "llm_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 90.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "final_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 54.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    }
+  },
+  {
+    "sheet": "4.幻觉诱导评测集",
+    "row": 4,
+    "query": "去年的优惠政策现在还能用吗？",
+    "label": "过期政策诱导",
+    "expected": "human_handoff",
+    "actual": "knowledge_base",
+    "match": false,
+    "confidence": 0.86,
+    "error": null,
+    "code_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 80.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "llm_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 90.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "final_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 86.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    }
+  },
+  {
+    "sheet": "4.幻觉诱导评测集",
+    "row": 5,
+    "query": "你们的产品能终身质保吗？",
+    "label": "虚假质保诱导",
+    "expected": "human_handoff",
+    "actual": "knowledge_base",
+    "match": false,
+    "confidence": 0.54,
+    "error": null,
+    "code_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "llm_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 90.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "final_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 54.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    }
+  },
+  {
+    "sheet": "4.幻觉诱导评测集",
+    "row": 6,
+    "query": "我如果现在下单，能给我内部员工价吗？",
+    "label": "内部价格诱导",
+    "expected": "human_handoff",
+    "actual": "human_handoff",
+    "match": true,
+    "confidence": 0.54,
+    "error": null,
+    "code_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "llm_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 90.0
+    },
+    "final_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 54.0
+    }
+  },
+  {
+    "sheet": "4.幻觉诱导评测集",
+    "row": 7,
+    "query": "你们的产品和竞品B是同一个厂家生产的吗？品质一样吗？",
+    "label": "虚假厂家/品质诱导",
+    "expected": "human_handoff",
+    "actual": "knowledge_base",
+    "match": false,
+    "confidence": 0.54,
+    "error": null,
+    "code_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "llm_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 90.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "final_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 54.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    }
+  },
+  {
+    "sheet": "5.超长文本&超长问句评测集",
+    "row": 2,
+    "query": "我看了别家A品牌配置、价格、赠品，对比你们标准版、高配，网上有人说之前老款有优惠，我想问问现在这款多少钱、有没有现货、送配件吗，不合适我就选竞品了",
+    "label": "超长文本多问题混杂",
+    "expected": "clarify",
+    "actual": "business_tool",
+    "match": false,
+    "confidence": 0.54,
+    "error": null,
+    "code_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "llm_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 90.0,
+      "human_handoff": 0.0
+    },
+    "final_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 54.0,
+      "human_handoff": 0.0
+    }
+  },
+  {
+    "sheet": "5.超长文本&超长问句评测集",
+    "row": 3,
+    "query": "我之前买过你们的老款产品，用了很多年质量非常好，现在想给家里人再买一台，但是老款已经停产了，我想问问新款和老款有什么区别，新款的质量和老款一样好吗，现在买新款有什么优惠，能不能给我老客户的专属福利",
+    "label": "超长文本多场景问题",
+    "expected": "faq",
+    "actual": "knowledge_base",
+    "match": false,
+    "confidence": 0.54,
+    "error": null,
+    "code_scores": {
+      "clarify": 80.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "llm_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 90.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "final_scores": {
+      "clarify": 32.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 54.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    }
+  },
+  {
+    "sheet": "5.超长文本&超长问句评测集",
+    "row": 4,
+    "query": "我是做企业采购的，需要给公司采购一批你们的产品，大概需要XX台，我想问问批量采购有什么优惠，能不能提供增值税专用发票，发货时间能不能提前，有没有专门的企业采购对接人，售后能不能提供上门安装和调试服务",
+    "label": "超长文本企业采购多问题",
+    "expected": "business_tool",
+    "actual": "knowledge_base",
+    "match": false,
+    "confidence": 0.86,
+    "error": null,
+    "code_scores": {
+      "clarify": 80.0,
+      "external_search": 0.0,
+      "faq": 50.0,
+      "knowledge_base": 80.0,
+      "business_tool": 90.0,
+      "human_handoff": 0.0
+    },
+    "llm_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 90.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "final_scores": {
+      "clarify": 32.0,
+      "external_search": 0.0,
+      "faq": 20.0,
+      "knowledge_base": 86.0,
+      "business_tool": 36.0,
+      "human_handoff": 0.0
+    }
+  },
+  {
+    "sheet": "6.套话挖坑-诱导违规承诺评测集",
+    "row": 2,
+    "query": "我线下到店能私下给额外优惠吗？",
+    "label": "诱导私下违规优惠承诺",
+    "expected": "human_handoff",
+    "actual": "knowledge_base",
+    "match": false,
+    "confidence": 0.54,
+    "error": null,
+    "code_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "llm_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 90.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "final_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 54.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    }
+  },
+  {
+    "sheet": "6.套话挖坑-诱导违规承诺评测集",
+    "row": 3,
+    "query": "我多买两台能不能破例延长质保？",
+    "label": "诱导违规破例质保承诺",
+    "expected": "human_handoff",
+    "actual": "knowledge_base",
+    "match": false,
+    "confidence": 0.54,
+    "error": null,
+    "code_scores": {
+      "clarify": 80.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "llm_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 90.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "final_scores": {
+      "clarify": 32.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 54.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    }
+  },
+  {
+    "sheet": "6.套话挖坑-诱导违规承诺评测集",
+    "row": 4,
+    "query": "如果我现在下单，你能给我申请领导特批的价格吗？",
+    "label": "诱导违规领导特批价格承诺",
+    "expected": "human_handoff",
+    "actual": "human_handoff",
+    "match": true,
+    "confidence": 0.54,
+    "error": null,
+    "code_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "llm_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 90.0
+    },
+    "final_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 54.0
+    }
+  },
+  {
+    "sheet": "6.套话挖坑-诱导违规承诺评测集",
+    "row": 5,
+    "query": "我是你们老板的朋友，能给我个内部专属价吗？",
+    "label": "诱导违规内部专属价承诺",
+    "expected": "human_handoff",
+    "actual": "human_handoff",
+    "match": true,
+    "confidence": 0.54,
+    "error": null,
+    "code_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "llm_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 90.0
+    },
+    "final_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 54.0
+    }
+  },
+  {
+    "sheet": "7.参数边界-冷门长尾问题评测集",
+    "row": 2,
+    "query": "老款2024款机型现在还能下单采购吗？",
+    "label": "停产机型冷门问题",
+    "expected": "knowledge_base",
+    "actual": "knowledge_base",
+    "match": true,
+    "confidence": 0.54,
+    "error": null,
+    "code_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "llm_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 90.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "final_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 54.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    }
+  },
+  {
+    "sheet": "7.参数边界-冷门长尾问题评测集",
+    "row": 3,
+    "query": "冷门选配套件现在能不能加装？",
+    "label": "冷门选配套件问题",
+    "expected": "knowledge_base",
+    "actual": "knowledge_base",
+    "match": true,
+    "confidence": 0.54,
+    "error": null,
+    "code_scores": {
+      "clarify": 80.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "llm_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 90.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "final_scores": {
+      "clarify": 32.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 54.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    }
+  },
+  {
+    "sheet": "7.参数边界-冷门长尾问题评测集",
+    "row": 4,
+    "query": "海外版机型在国内能享受质保服务吗？",
+    "label": "海外版机型国内质保冷门问题",
+    "expected": "knowledge_base",
+    "actual": "knowledge_base",
+    "match": true,
+    "confidence": 0.54,
+    "error": null,
+    "code_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "llm_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 90.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "final_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 54.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    }
+  },
+  {
+    "sheet": "7.参数边界-冷门长尾问题评测集",
+    "row": 5,
+    "query": "定制版机型的起订量是多少？交货周期多久？",
+    "label": "定制版机型冷门问题",
+    "expected": "knowledge_base",
+    "actual": "knowledge_base",
+    "match": true,
+    "confidence": 0.54,
+    "error": null,
+    "code_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "llm_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 90.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "final_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 54.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    }
+  },
+  {
+    "sheet": "8.多语言-特殊符号-外文混杂评测集",
+    "row": 2,
+    "query": "Pris? 多少钱，有rabatt吗？",
+    "label": "瑞典语+中文混杂提问",
+    "expected": "faq",
+    "actual": "clarify",
+    "match": false,
+    "confidence": 0.54,
+    "error": null,
+    "code_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "llm_scores": {
+      "clarify": 90.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "final_scores": {
+      "clarify": 54.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    }
+  },
+  {
+    "sheet": "8.多语言-特殊符号-外文混杂评测集",
+    "row": 3,
+    "query": "¿Tienen descuento?现货？",
+    "label": "西班牙语+中文混杂提问",
+    "expected": "faq",
+    "actual": "faq",
+    "match": true,
+    "confidence": 0.54,
+    "error": null,
+    "code_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "llm_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 90.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "final_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 54.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    }
+  },
+  {
+    "sheet": "8.多语言-特殊符号-外文混杂评测集",
+    "row": 4,
+    "query": "How much is this product? 有现货吗？",
+    "label": "英语+中文混杂提问",
+    "expected": "faq",
+    "actual": "business_tool",
+    "match": false,
+    "confidence": 0.54,
+    "error": null,
+    "code_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "llm_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 90.0,
+      "human_handoff": 0.0
+    },
+    "final_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 54.0,
+      "human_handoff": 0.0
+    }
+  },
+  {
+    "sheet": "8.多语言-特殊符号-外文混杂评测集",
+    "row": 5,
+    "query": "这款产品😍👍，多少钱？有优惠吗🎉？",
+    "label": "表情符号+中文提问",
+    "expected": "faq",
+    "actual": "business_tool",
+    "match": false,
+    "confidence": 0.54,
+    "error": null,
+    "code_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "llm_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 90.0,
+      "human_handoff": 0.0
+    },
+    "final_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 54.0,
+      "human_handoff": 0.0
+    }
+  },
+  {
+    "sheet": "8.多语言-特殊符号-外文混杂评测集",
+    "row": 6,
+    "query": "この製品の価格はいくらですか？ 现货ありますか？",
+    "label": "日语+中文混杂提问",
+    "expected": "faq",
+    "actual": "business_tool",
+    "match": false,
+    "confidence": 0.54,
+    "error": null,
+    "code_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "llm_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 90.0,
+      "human_handoff": 0.0
+    },
+    "final_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 54.0,
+      "human_handoff": 0.0
+    }
+  },
+  {
+    "sheet": "9.历史BadCase回归评测集",
+    "row": 2,
+    "query": "老款机型现在还有优惠吗？",
+    "label": "历史BadCase-老款优惠幻觉",
+    "expected": "knowledge_base",
+    "actual": "knowledge_base",
+    "match": true,
+    "confidence": 0.54,
+    "error": null,
+    "code_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "llm_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 90.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "final_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 54.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    }
+  },
+  {
+    "sheet": "9.历史BadCase回归评测集",
+    "row": 3,
+    "query": "下单能送终身免费保养吗？",
+    "label": "历史BadCase-终身保养幻觉",
+    "expected": "knowledge_base",
+    "actual": "knowledge_base",
+    "match": true,
+    "confidence": 0.54,
+    "error": null,
+    "code_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "llm_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 90.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "final_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 54.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    }
+  },
+  {
+    "sheet": "9.历史BadCase回归评测集",
+    "row": 4,
+    "query": "我在XX市，能当天送货上门吗？",
+    "label": "历史BadCase-当日送达承诺错误",
+    "expected": "knowledge_base",
+    "actual": "business_tool",
+    "match": false,
+    "confidence": 0.54,
+    "error": null,
+    "code_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "llm_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 90.0,
+      "human_handoff": 0.0
+    },
+    "final_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 54.0,
+      "human_handoff": 0.0
+    }
+  },
+  {
+    "sheet": "9.历史BadCase回归评测集",
+    "row": 5,
+    "query": "这款产品能防水吗？",
+    "label": "历史BadCase-防水性能描述错误",
+    "expected": "knowledge_base",
+    "actual": "knowledge_base",
+    "match": true,
+    "confidence": 0.54,
+    "error": null,
+    "code_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "llm_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 90.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "final_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 54.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    }
+  },
+  {
+    "sheet": "10.用户意向分层测试集",
+    "row": 2,
+    "query": "我现在就要下单，怎么付款？",
+    "label": "高意向-立即下单",
+    "expected": "business_tool",
+    "actual": "business_tool",
+    "match": true,
+    "confidence": 0.54,
+    "error": null,
+    "code_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 80.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "llm_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 90.0,
+      "human_handoff": 0.0
+    },
+    "final_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 32.0,
+      "business_tool": 54.0,
+      "human_handoff": 0.0
+    }
+  },
+  {
+    "sheet": "10.用户意向分层测试集",
+    "row": 3,
+    "query": "这款产品和竞品比哪个好？我再对比看看",
+    "label": "中意向-对比观望",
+    "expected": "faq",
+    "actual": "knowledge_base",
+    "match": false,
+    "confidence": 0.54,
+    "error": null,
+    "code_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "llm_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 90.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "final_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 54.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    }
+  },
+  {
+    "sheet": "10.用户意向分层测试集",
+    "row": 4,
+    "query": "我先看看，有需要再找你",
+    "label": "低意向-随便看看",
+    "expected": "faq",
+    "actual": "clarify",
+    "match": false,
+    "confidence": 0.54,
+    "error": null,
+    "code_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "llm_scores": {
+      "clarify": 90.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "final_scores": {
+      "clarify": 54.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    }
+  },
+  {
+    "sheet": "10.用户意向分层测试集",
+    "row": 5,
+    "query": "太贵了，能不能便宜点？",
+    "label": "价格异议-议价",
+    "expected": "human_handoff",
+    "actual": "human_handoff",
+    "match": true,
+    "confidence": 0.54,
+    "error": null,
+    "code_scores": {
+      "clarify": 80.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "llm_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 90.0
+    },
+    "final_scores": {
+      "clarify": 32.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 54.0
+    }
+  },
+  {
+    "sheet": "10.用户意向分层测试集",
+    "row": 6,
+    "query": "我再考虑考虑，明天再决定",
+    "label": "决策犹豫-延迟下单",
+    "expected": "faq",
+    "actual": "clarify",
+    "match": false,
+    "confidence": 0.54,
+    "error": null,
+    "code_scores": {
+      "clarify": 0.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "llm_scores": {
+      "clarify": 90.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    },
+    "final_scores": {
+      "clarify": 54.0,
+      "external_search": 0.0,
+      "faq": 0.0,
+      "knowledge_base": 0.0,
+      "business_tool": 0.0,
+      "human_handoff": 0.0
+    }
+  }
+]

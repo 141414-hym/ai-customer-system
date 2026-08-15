@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>aiagent 调试页</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+    }
+    .wrap {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    .card {
+      background: #111827;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 10px 24px rgba(0,0,0,.2);
+    }
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 14px;
+      color: #cbd5e1;
+    }
+    input, textarea, button {
+      width: 100%;
+      box-sizing: border-box;
+      border-radius: 10px;
+      border: 1px solid #475569;
+      background: #0b1220;
+      color: #e2e8f0;
+      padding: 10px 12px;
+      font-size: 14px;
+    }
+    textarea { min-height: 80px; resize: vertical; }
+    button {
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      margin-top: 8px;
+    }
+    button:hover { opacity: .92; }
+    button:disabled { opacity: .5; cursor: not-allowed; }
+    pre {
+      white-space: pre-wrap;
+      word-break: break-word;
+      background: #020617;
+      border: 1px solid #334155;
+      border-radius: 10px;
+      padding: 12px;
+      overflow: auto;
+      max-height: 200px;
+    }
+    .row { display: flex; gap: 12px; align-items: center; }
+    .row > div { flex: 1; }
+    .muted { color: #94a3b8; font-size: 13px; }
+    .ok { color: #4ade80; }
+    .err { color: #f87171; }
+    /* 对话历史 */
+    .chat-box {
+      min-height: 300px;
+      max-height: 500px;
+      overflow-y: auto;
+      background: #020617;
+      border: 1px solid #334155;
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    .chat-item {
+      margin-bottom: 16px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      max-width: 85%;
+      word-break: break-word;
+    }
+    .chat-item.user {
+      background: #1d4ed8;
+      margin-left: auto;
+      text-align: right;
+    }
+    .chat-item.assistant {
+      background: #1e293b;
+      margin-right: auto;
+    }
+    .chat-item .role {
+      font-size: 11px;
+      color: #94a3b8;
+      margin-bottom: 4px;
+    }
+    .chat-item .content {
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    .bottom-bar {
+      display: flex;
+      gap: 8px;
+      align-items: flex-end;
+    }
+    .bottom-bar textarea { flex: 1; }
+    .bottom-bar button { width: auto; padding: 10px 24px; }
+    #newSessionBtn {
+      background: #334155;
+      margin-bottom: 12px;
+      width: auto;
+      padding: 6px 16px;
+      font-size: 12px;
+    }
+    .info-row {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>aiagent 调试页</h1>
+    <p class="muted">多轮对话测试 — 发送消息后观察路由和回复。</p>
+
+    <div class="card">
+      <div class="info-row">
+        <span class="muted">Session: <b id="sessionLabel">自动生成</b></span>
+        <span class="muted">轮次: <b id="turnLabel">0</b></span>
+        <button id="newSessionBtn">新建会话</button>
+      </div>
+
+      <div class="chat-box" id="chatBox">
+        <p class="muted" style="text-align:center;padding-top:120px;">输入问题开始对话...</p>
+      </div>
+
+      <div class="bottom-bar">
+        <textarea id="message" placeholder="输入你的问题..." rows="2"></textarea>
+        <button id="sendBtn">发送</button>
+      </div>
+      <div id="status" class="muted" style="margin-top:8px;">就绪</div>
+    </div>
+
+    <div class="card">
+      <h3>最近一次状态快照</h3>
+      <pre id="stateJson">{}</pre>
+    </div>
+  </div>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+
+    // 生成唯一 sessionId
+    function newSessionId() {
+      return 's-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8);
+    }
+
+    let sessionId = newSessionId();
+    let turnCount = 0;
+    const tenantId = 't001';
+    const productCode = 'p001';
+    const locale = 'zh-CN';
+
+    function updateInfo() {
+      $('sessionLabel').textContent = sessionId.slice(0, 24) + '...';
+      $('turnLabel').textContent = turnCount;
+    }
+    updateInfo();
+
+    $('newSessionBtn').addEventListener('click', () => {
+      sessionId = newSessionId();
+      turnCount = 0;
+      $('chatBox').innerHTML = '<p class="muted" style="text-align:center;padding-top:120px;">输入问题开始对话...</p>';
+      $('stateJson').textContent = '{}';
+      $('status').textContent = '就绪';
+      $('status').className = 'muted';
+      updateInfo();
+    });
+
+    function addChatItem(role, content) {
+      const box = $('chatBox');
+      // 移除初始提示
+      const placeholder = box.querySelector('.muted[style]');
+      if (placeholder) placeholder.remove();
+
+      const div = document.createElement('div');
+      div.className = 'chat-item ' + role;
+      div.innerHTML = '<div class="role">' + (role === 'user' ? '用户' : '助手') + '</div>'
+                    + '<div class="content">' + escapeHtml(content) + '</div>';
+      box.appendChild(div);
+      box.scrollTop = box.scrollHeight;
+    }
+
+    function escapeHtml(text) {
+      return String(text)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/\n/g, '<br>');
+    }
+
+    async function send() {
+      const message = $('message').value.trim();
+      if (!message) return;
+
+      const btn = $('sendBtn');
+      btn.disabled = true;
+      $('status').textContent = '请求中...';
+      $('status').className = 'muted';
+
+      addChatItem('user', message);
+      $('message').value = '';
+
+      try {
+        const res = await fetch('/chat/ask', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            sessionId: sessionId,
+            tenantId: tenantId,
+            productCode: productCode,
+            locale: locale,
+            message: message
+          })
+        });
+        const data = await res.json();
+        $('stateJson').textContent = JSON.stringify(data, null, 2);
+
+        // 从返回中提取 answer
+        const events = data.events;
+        let answer = '（未获取到回复）';
+        if (events && events.length > 0) {
+          // 找最后一个有 answer 的 state
+          for (let i = events.length - 1; i >= 0; i--) {
+            const st = events[i].state;
+            if (st && st.answer) {
+              answer = st.answer;
+              break;
+            }
+          }
+        }
+
+        addChatItem('assistant', answer);
+        turnCount++;
+        updateInfo();
+        $('status').textContent = res.ok ? '请求成功' : '请求失败';
+        $('status').className = res.ok ? 'ok' : 'err';
+      } catch (e) {
+        addChatItem('assistant', '请求异常: ' + (e.stack || e));
+        $('status').textContent = '请求异常';
+        $('status').className = 'err';
+      } finally {
+        btn.disabled = false;
+        $('message').focus();
+      }
+    }
+
+    $('sendBtn').addEventListener('click', send);
+    $('message').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        send();
+      }
+    });
+  </script>
+</body>
+</html>

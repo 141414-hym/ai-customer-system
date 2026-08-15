@@ -1,0 +1,7 @@
+.env
+.idea/
+.vscode/
+target/
+*.log
+knowledge_base/chunks/*.tmp
+null

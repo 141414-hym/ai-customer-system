@@ -1,0 +1,703 @@
+{
+  "overall_recall": "73.2%",
+  "total_cases": 52,
+  "full_hit": 32,
+  "partial": 4,
+  "zero_hit": 10,
+  "type_stats": {
+    "价格": {
+      "need": 30,
+      "hit": 20
+    },
+    "库存": {
+      "need": 11,
+      "hit": 9
+    },
+    "参数": {
+      "need": 9,
+      "hit": 6
+    },
+    "政策": {
+      "need": 6,
+      "hit": 6
+    }
+  },
+  "details": [
+    {
+      "case_id": "TC-001",
+      "label": "产品询价",
+      "expect_rag_types": [
+        "价格"
+      ],
+      "hit_types": [
+        "价格"
+      ],
+      "miss_types": [],
+      "recall": 1.0,
+      "sub_queries": "这款产品标准版多少钱"
+    },
+    {
+      "case_id": "TC-002",
+      "label": "配置对比",
+      "expect_rag_types": [
+        "参数"
+      ],
+      "hit_types": [
+        "参数"
+      ],
+      "miss_types": [],
+      "recall": 1.0,
+      "sub_queries": "高配版和标准版有什么区别"
+    },
+    {
+      "case_id": "TC-003",
+      "label": "活动咨询",
+      "expect_rag_types": [
+        "价格"
+      ],
+      "hit_types": [
+        "价格"
+      ],
+      "miss_types": [],
+      "recall": 1.0,
+      "sub_queries": "现在下单有什么优惠活动"
+    },
+    {
+      "case_id": "TC-004",
+      "label": "库存物流",
+      "expect_rag_types": [
+        "库存"
+      ],
+      "hit_types": [
+        "库存"
+      ],
+      "miss_types": [],
+      "recall": 1.0,
+      "sub_queries": ""
+    },
+    {
+      "case_id": "TC-005",
+      "label": "售后质保",
+      "expect_rag_types": [
+        "政策"
+      ],
+      "hit_types": [
+        "政策"
+      ],
+      "miss_types": [],
+      "recall": 1.0,
+      "sub_queries": "这款产品的质保政策是怎样的"
+    },
+    {
+      "case_id": "TC-006",
+      "label": "错别字提问",
+      "expect_rag_types": [
+        "价格"
+      ],
+      "hit_types": [
+        "价格"
+      ],
+      "miss_types": [],
+      "recall": 1.0,
+      "sub_queries": "这款车多少钱"
+    },
+    {
+      "case_id": "TC-007",
+      "label": "谐音+错别字提问",
+      "expect_rag_types": [
+        "价格",
+        "库存"
+      ],
+      "hit_types": [
+        "库存"
+      ],
+      "miss_types": [
+        "价格"
+      ],
+      "recall": 0.5,
+      "sub_queries": "有优惠吗 | 现货多久发货"
+    },
+    {
+      "case_id": "TC-008",
+      "label": "语句残缺+口语化提问",
+      "expect_rag_types": [
+        "参数"
+      ],
+      "hit_types": [
+        "参数"
+      ],
+      "miss_types": [],
+      "recall": 1.0,
+      "sub_queries": "同配置哪个型号更划算"
+    },
+    {
+      "case_id": "TC-009",
+      "label": "碎片化短句提问",
+      "expect_rag_types": [
+        "价格",
+        "库存"
+      ],
+      "hit_types": [
+        "价格",
+        "库存"
+      ],
+      "miss_types": [],
+      "recall": 1.0,
+      "sub_queries": "有什么优惠 | 是否有现货"
+    },
+    {
+      "case_id": "TC-010",
+      "label": "碎片化短句提问",
+      "expect_rag_types": [
+        "价格",
+        "库存"
+      ],
+      "hit_types": [
+        "价格"
+      ],
+      "miss_types": [
+        "库存"
+      ],
+      "recall": 0.5,
+      "sub_queries": "高配版对比"
+    },
+    {
+      "case_id": "TC-011",
+      "label": "单字口语化提问",
+      "expect_rag_types": [
+        "价格"
+      ],
+      "hit_types": [],
+      "miss_types": [
+        "价格"
+      ],
+      "recall": 0.0,
+      "sub_queries": ""
+    },
+    {
+      "case_id": "TC-012",
+      "label": "乱码+无意义闲聊",
+      "expect_rag_types": [],
+      "hit_types": [],
+      "miss_types": [],
+      "recall": null,
+      "sub_queries": ""
+    },
+    {
+      "case_id": "TC-013",
+      "label": "表情+无意义闲聊",
+      "expect_rag_types": [],
+      "hit_types": [],
+      "miss_types": [],
+      "recall": null,
+      "sub_queries": ""
+    },
+    {
+      "case_id": "TC-014",
+      "label": "多意图杂糅提问",
+      "expect_rag_types": [
+        "价格"
+      ],
+      "hit_types": [
+        "价格"
+      ],
+      "miss_types": [],
+      "recall": 1.0,
+      "sub_queries": "车子多少钱 | 你们奶茶卖吗"
+    },
+    {
+      "case_id": "TC-015",
+      "label": "多轮连续追问",
+      "expect_rag_types": [
+        "价格",
+        "库存"
+      ],
+      "hit_types": [
+        "价格",
+        "库存"
+      ],
+      "miss_types": [],
+      "recall": 1.0,
+      "sub_queries": "这款高配多少钱 | 这款高配有现货吗 | 现在有什么优惠活动"
+    },
+    {
+      "case_id": "TC-016",
+      "label": "多轮连续追问",
+      "expect_rag_types": [
+        "价格",
+        "库存"
+      ],
+      "hit_types": [
+        "库存"
+      ],
+      "miss_types": [
+        "价格"
+      ],
+      "recall": 0.5,
+      "sub_queries": "哪个颜色卖得最好 | 卖得最好的颜色有现货吗"
+    },
+    {
+      "case_id": "TC-017",
+      "label": "多轮竞品对比",
+      "expect_rag_types": [
+        "参数"
+      ],
+      "hit_types": [
+        "参数"
+      ],
+      "miss_types": [],
+      "recall": 1.0,
+      "sub_queries": "你们的产品和竞品A比有什么优势 | 你们的价格比竞品A贵还是便宜 | 如果我买你们的产品,能送竞品A的同款配件吗"
+    },
+    {
+      "case_id": "TC-018",
+      "label": "多轮分期咨询",
+      "expect_rag_types": [
+        "价格"
+      ],
+      "hit_types": [],
+      "miss_types": [
+        "价格"
+      ],
+      "recall": 0.0,
+      "sub_queries": "这款产品能分期吗 | 分期有手续费吗 | 最长能分多少期"
+    },
+    {
+      "case_id": "TC-019",
+      "label": "多轮产品参数咨询",
+      "expect_rag_types": [
+        "参数"
+      ],
+      "hit_types": [
+        "参数"
+      ],
+      "miss_types": [],
+      "recall": 1.0,
+      "sub_queries": "轮1:这款产品的电池容量多大? 轮2:续航能力怎么样? 轮3:充电需要多久? 轮4:续航还可以,那我买了"
+    },
+    {
+      "case_id": "TC-020",
+      "label": "多轮售后咨询",
+      "expect_rag_types": [
+        "政策"
+      ],
+      "hit_types": [
+        "政策"
+      ],
+      "miss_types": [],
+      "recall": 1.0,
+      "sub_queries": "XX市售后网点在哪里 | XX市的网点支持上门维修吗"
+    },
+    {
+      "case_id": "TC-021",
+      "label": "多轮场景化咨询",
+      "expect_rag_types": [
+        "参数"
+      ],
+      "hit_types": [],
+      "miss_types": [
+        "参数"
+      ],
+      "recall": 0.0,
+      "sub_queries": "轮1:这款产品适合送给父母吗? 轮2:操作简单吗?父母能学会吗? 轮3:字体大不大?视力不好能看清吗? 轮4:挺合适的,那我买一台送父母"
+    },
+    {
+      "case_id": "TC-022",
+      "label": "虚假优惠诱导",
+      "expect_rag_types": [
+        "价格"
+      ],
+      "hit_types": [
+        "价格"
+      ],
+      "miss_types": [],
+      "recall": 1.0,
+      "sub_queries": "老客户额外再减2000吗"
+    },
+    {
+      "case_id": "TC-023",
+      "label": "虚假赠品诱导",
+      "expect_rag_types": [
+        "价格"
+      ],
+      "hit_types": [
+        "价格"
+      ],
+      "miss_types": [],
+      "recall": 1.0,
+      "sub_queries": "现在下单是否送原装配件"
+    },
+    {
+      "case_id": "TC-024",
+      "label": "过期政策诱导",
+      "expect_rag_types": [
+        "价格"
+      ],
+      "hit_types": [],
+      "miss_types": [
+        "价格"
+      ],
+      "recall": 0.0,
+      "sub_queries": "去年的优惠政策现在还能用吗"
+    },
+    {
+      "case_id": "TC-025",
+      "label": "虚假质保诱导",
+      "expect_rag_types": [
+        "政策"
+      ],
+      "hit_types": [
+        "政策"
+      ],
+      "miss_types": [],
+      "recall": 1.0,
+      "sub_queries": "你们的产品能终身质保吗"
+    },
+    {
+      "case_id": "TC-026",
+      "label": "内部价格诱导",
+      "expect_rag_types": [
+        "价格"
+      ],
+      "hit_types": [
+        "价格"
+      ],
+      "miss_types": [],
+      "recall": 1.0,
+      "sub_queries": "我如果现在下单,能给我内部员工价吗"
+    },
+    {
+      "case_id": "TC-027",
+      "label": "虚假厂家/品质诱导",
+      "expect_rag_types": [],
+      "hit_types": [],
+      "miss_types": [],
+      "recall": null,
+      "sub_queries": ""
+    },
+    {
+      "case_id": "TC-028",
+      "label": "超长文本多问题混杂",
+      "expect_rag_types": [
+        "价格",
+        "库存"
+      ],
+      "hit_types": [
+        "价格",
+        "库存"
+      ],
+      "miss_types": [],
+      "recall": 1.0,
+      "sub_queries": "你们标准版和高配版的价格是多少 | 你们标准版和高配有现货吗 | 购买你们的标准版或高配版会送配件吗"
+    },
+    {
+      "case_id": "TC-029",
+      "label": "超长文本多场景问题",
+      "expect_rag_types": [
+        "价格"
+      ],
+      "hit_types": [
+        "价格"
+      ],
+      "miss_types": [],
+      "recall": 1.0,
+      "sub_queries": "新款和老款有什么区别 | 新款的质量和老款一样好吗 | 现在买新款有什么优惠 | 能不能给老客户的专属福利"
+    },
+    {
+      "case_id": "TC-030",
+      "label": "超长文本企业采购多问题",
+      "expect_rag_types": [
+        "价格"
+      ],
+      "hit_types": [
+        "价格"
+      ],
+      "miss_types": [],
+      "recall": 1.0,
+      "sub_queries": "批量采购有什么优惠 | 能否提供增值税专用发票 | 发货时间是否可以提前 | 是否有专门的企业采购对接人 | 售后是否提供上门安装和调试服务"
+    },
+    {
+      "case_id": "TC-031",
+      "label": "诱导私下违规优惠承诺",
+      "expect_rag_types": [
+        "价格"
+      ],
+      "hit_types": [],
+      "miss_types": [
+        "价格"
+      ],
+      "recall": 0.0,
+      "sub_queries": "线下到店能给额外优惠吗"
+    },
+    {
+      "case_id": "TC-032",
+      "label": "诱导违规破例质保承诺",
+      "expect_rag_types": [
+        "政策"
+      ],
+      "hit_types": [
+        "政策"
+      ],
+      "miss_types": [],
+      "recall": 1.0,
+      "sub_queries": "多买两台能否延长质保"
+    },
+    {
+      "case_id": "TC-033",
+      "label": "诱导违规领导特批价格承诺",
+      "expect_rag_types": [
+        "价格"
+      ],
+      "hit_types": [],
+      "miss_types": [
+        "价格"
+      ],
+      "recall": 0.0,
+      "sub_queries": ""
+    },
+    {
+      "case_id": "TC-034",
+      "label": "诱导违规内部专属价承诺",
+      "expect_rag_types": [
+        "价格"
+      ],
+      "hit_types": [],
+      "miss_types": [
+        "价格"
+      ],
+      "recall": 0.0,
+      "sub_queries": ""
+    },
+    {
+      "case_id": "TC-035",
+      "label": "停产机型冷门问题",
+      "expect_rag_types": [
+        "参数"
+      ],
+      "hit_types": [],
+      "miss_types": [
+        "参数"
+      ],
+      "recall": 0.0,
+      "sub_queries": "2024款老款机型现在还能下单采购吗"
+    },
+    {
+      "case_id": "TC-036",
+      "label": "冷门选配套件问题",
+      "expect_rag_types": [
+        "参数"
+      ],
+      "hit_types": [
+        "参数"
+      ],
+      "miss_types": [],
+      "recall": 1.0,
+      "sub_queries": "冷门选配套件现在能不能加装"
+    },
+    {
+      "case_id": "TC-037",
+      "label": "海外版机型国内质保冷门问题",
+      "expect_rag_types": [
+        "政策"
+      ],
+      "hit_types": [
+        "政策"
+      ],
+      "miss_types": [],
+      "recall": 1.0,
+      "sub_queries": "海外版机型在国内能享受质保服务吗"
+    },
+    {
+      "case_id": "TC-038",
+      "label": "定制版机型冷门问题",
+      "expect_rag_types": [
+        "价格",
+        "参数"
+      ],
+      "hit_types": [],
+      "miss_types": [
+        "价格",
+        "参数"
+      ],
+      "recall": 0.0,
+      "sub_queries": "定制版机型的起订量是多少 | 定制版机型的交货周期多久"
+    },
+    {
+      "case_id": "TC-039",
+      "label": "瑞典语+中文混杂提问",
+      "expect_rag_types": [
+        "价格"
+      ],
+      "hit_types": [
+        "价格"
+      ],
+      "miss_types": [],
+      "recall": 1.0,
+      "sub_queries": "Pris多少钱 | 有优惠吗"
+    },
+    {
+      "case_id": "TC-040",
+      "label": "西班牙语+中文混杂提问",
+      "expect_rag_types": [
+        "价格",
+        "库存"
+      ],
+      "hit_types": [
+        "价格"
+      ],
+      "miss_types": [
+        "库存"
+      ],
+      "recall": 0.5,
+      "sub_queries": "现货有折扣吗"
+    },
+    {
+      "case_id": "TC-041",
+      "label": "英语+中文混杂提问",
+      "expect_rag_types": [
+        "价格",
+        "库存"
+      ],
+      "hit_types": [
+        "价格",
+        "库存"
+      ],
+      "miss_types": [],
+      "recall": 1.0,
+      "sub_queries": "这个产品多少钱 | 有现货吗"
+    },
+    {
+      "case_id": "TC-042",
+      "label": "表情符号+中文提问",
+      "expect_rag_types": [
+        "价格"
+      ],
+      "hit_types": [
+        "价格"
+      ],
+      "miss_types": [],
+      "recall": 1.0,
+      "sub_queries": "这款产品多少钱 | 这款产品有优惠吗"
+    },
+    {
+      "case_id": "TC-043",
+      "label": "日语+中文混杂提问",
+      "expect_rag_types": [
+        "价格",
+        "库存"
+      ],
+      "hit_types": [
+        "价格",
+        "库存"
+      ],
+      "miss_types": [],
+      "recall": 1.0,
+      "sub_queries": "这个产品的价格是多少 | 有现货吗"
+    },
+    {
+      "case_id": "TC-044",
+      "label": "历史BadCase-老款优惠幻觉",
+      "expect_rag_types": [
+        "价格"
+      ],
+      "hit_types": [],
+      "miss_types": [
+        "价格"
+      ],
+      "recall": 0.0,
+      "sub_queries": "老款机型现在还有优惠吗"
+    },
+    {
+      "case_id": "TC-045",
+      "label": "历史BadCase-终身保养幻觉",
+      "expect_rag_types": [
+        "政策"
+      ],
+      "hit_types": [
+        "政策"
+      ],
+      "miss_types": [],
+      "recall": 1.0,
+      "sub_queries": "下单能送终身免费保养吗"
+    },
+    {
+      "case_id": "TC-046",
+      "label": "历史BadCase-当日送达承诺错误",
+      "expect_rag_types": [
+        "库存"
+      ],
+      "hit_types": [
+        "库存"
+      ],
+      "miss_types": [],
+      "recall": 1.0,
+      "sub_queries": "XX市能否当天送货上门"
+    },
+    {
+      "case_id": "TC-047",
+      "label": "历史BadCase-防水性能描述错误",
+      "expect_rag_types": [
+        "参数"
+      ],
+      "hit_types": [
+        "参数"
+      ],
+      "miss_types": [],
+      "recall": 1.0,
+      "sub_queries": "这款产品能防水吗"
+    },
+    {
+      "case_id": "TC-048",
+      "label": "高意向-立即下单",
+      "expect_rag_types": [
+        "价格"
+      ],
+      "hit_types": [
+        "价格"
+      ],
+      "miss_types": [],
+      "recall": 1.0,
+      "sub_queries": "怎么付款"
+    },
+    {
+      "case_id": "TC-049",
+      "label": "中意向-对比观望",
+      "expect_rag_types": [],
+      "hit_types": [],
+      "miss_types": [],
+      "recall": null,
+      "sub_queries": ""
+    },
+    {
+      "case_id": "TC-050",
+      "label": "低意向-随便看看",
+      "expect_rag_types": [],
+      "hit_types": [],
+      "miss_types": [],
+      "recall": null,
+      "sub_queries": ""
+    },
+    {
+      "case_id": "TC-051",
+      "label": "价格异议-议价",
+      "expect_rag_types": [
+        "价格"
+      ],
+      "hit_types": [
+        "价格"
+      ],
+      "miss_types": [],
+      "recall": 1.0,
+      "sub_queries": "太贵了,能不能便宜点?"
+    },
+    {
+      "case_id": "TC-052",
+      "label": "决策犹豫-延迟下单",
+      "expect_rag_types": [],
+      "hit_types": [],
+      "miss_types": [],
+      "recall": null,
+      "sub_queries": ""
+    }
+  ]
+}
