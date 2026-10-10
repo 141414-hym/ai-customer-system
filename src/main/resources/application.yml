@@ -13,6 +13,9 @@ spring:
     redis:
       host: ${REDIS_HOST:localhost}
       port: ${REDIS_PORT:6379}
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
   ai:
     dashscope:
       api-key: ${AI_DASHSCOPE_API_KEY:}

@@ -15,7 +15,8 @@ import org.springframework.test.context.TestPropertySource;
         "spring.datasource.driver-class-name=org.h2.Driver",
         "spring.datasource.username=sa",
         "spring.datasource.password=",
-        "spring.sql.init.mode=always"
+        "spring.sql.init.mode=always",
+        "spring.flyway.enabled=false"
 })
 class JdbcConversationMessageRepositoryTest {
 
