@@ -242,7 +242,7 @@ for r in results:
         print(f'  {r["case_id"]} [{r["label"]}] 召回={r["recall"]*100:.0f}% 需要={r["expect_rag_types"]} 命中={r["hit_types"]} 缺失={r["miss_types"]} 子问题={r["sub_queries"]}')
 
 # 保存
-with open("eval_rag_v2.json", "w", encoding="utf-8") as f:
+with open("evaluation/reports/eval_rag_v2.json", "w", encoding="utf-8") as f:
     json.dump({
         "overall_recall": f"{overall_recall:.1f}%",
         "total_cases": total,
@@ -252,4 +252,4 @@ with open("eval_rag_v2.json", "w", encoding="utf-8") as f:
         "type_stats": type_stats,
         "details": results,
     }, f, ensure_ascii=False, indent=2)
-print(f"\n已保存: eval_rag_v2.json")
+print(f"\n已保存: evaluation/reports/eval_rag_v2.json")

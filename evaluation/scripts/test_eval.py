@@ -433,7 +433,7 @@ def main():
     parser = argparse.ArgumentParser(description="aiagent 批量评估工具")
     parser.add_argument("--file", "-f", help="测试集 JSON 文件路径")
     parser.add_argument("--url", "-u", default=DEFAULT_URL, help="aiagent 服务地址 (默认: http://localhost:8081)")
-    parser.add_argument("--output", "-o", default="eval_report.json", help="评估报告输出路径")
+    parser.add_argument("--output", "-o", default="evaluation/reports/eval_report.json", help="评估报告输出路径")
     args = parser.parse_args()
 
     # 加载测试集

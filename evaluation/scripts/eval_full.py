@@ -362,7 +362,7 @@ def main():
         "混淆矩阵": {er: {ar: confusion[er][ar] for ar in all_routes} for er in sorted(expected_routes)},
         "详细结果": results,
     }
-    out_path = "eval_report_full.json"
+    out_path = "evaluation/reports/eval_report_full.json"
     with open(out_path, "w", encoding="utf-8") as f:
         json.dump(report, f, ensure_ascii=False, indent=2)
     print(f"\n报告已保存: {out_path}")

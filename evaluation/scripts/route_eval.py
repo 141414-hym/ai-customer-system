@@ -313,7 +313,7 @@ def main():
     print_summary(results)
 
     # 保存 JSON 结果
-    out_path = "D:/java/aiagent/route_eval_results.json"
+    out_path = "evaluation/reports/route_eval_results.json"
     with open(out_path, "w", encoding="utf-8") as f:
         json.dump(results, f, ensure_ascii=False, indent=2)
     print(f"\n详细结果已保存到: {out_path}")

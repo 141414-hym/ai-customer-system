@@ -11,10 +11,10 @@ from collections import Counter, defaultdict
 sys.stdout = open(sys.stdout.fileno(), 'w', encoding='utf-8', buffering=1)
 
 # 加载数据
-with open('route_eval_results.json', 'r', encoding='utf-8') as f:
+with open('evaluation/reports/route_eval_results.json', 'r', encoding='utf-8') as f:
     route_data = json.load(f)  # 52条, 有路由
 
-with open('eval_data_full.json', 'r', encoding='utf-8') as f:
+with open('evaluation/data/eval_data_full.json', 'r', encoding='utf-8') as f:
     answer_data = json.load(f)  # 52条, 有 answer
 
 # 按 query 对齐（去掉多余空白）

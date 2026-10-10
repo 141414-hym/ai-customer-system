@@ -4,6 +4,7 @@
 target/
 data/checkpoints/
 logs/
+evaluation/reports/
 *.log
 knowledge_base/chunks/*.tmp
 null

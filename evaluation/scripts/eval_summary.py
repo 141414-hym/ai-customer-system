@@ -5,7 +5,7 @@ from collections import Counter, defaultdict
 
 sys.stdout = open(sys.stdout.fileno(), 'w', encoding='utf-8', buffering=1)
 
-with open('eval_data_full.json', 'r', encoding='utf-8') as f:
+with open('evaluation/data/eval_data_full.json', 'r', encoding='utf-8') as f:
     data = json.load(f)
 
 LABEL_ROUTE_MAP = {

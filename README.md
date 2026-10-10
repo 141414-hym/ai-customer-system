@@ -151,4 +151,7 @@ src/main/java/com/aiagent/
   tool/          订单查询工具
 src/test/        自动化测试
 knowledge_base/  示例知识库与切分结果
+evaluation/      离线评测、测试数据与压测脚本
 ```
+
+Python 评测与压测材料位于 [`evaluation/`](evaluation/README.md)，Java 自动化测试位于 `src/test/`。
