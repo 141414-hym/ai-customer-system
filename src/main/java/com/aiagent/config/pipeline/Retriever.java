@@ -37,6 +37,10 @@ public class Retriever {
     }
 
     public String retrieveMultiQuery(List<String> queries) {
+        return retrieveMultiQuery(queries, "", "", "");
+    }
+
+    public String retrieveMultiQuery(List<String> queries, String tenantId, String productCode, String locale) {
         if (queries == null || queries.isEmpty()) {
             return "【检索结果为空】无有效查询。";
         }
@@ -54,8 +58,9 @@ public class Retriever {
         for (String query : queries) {
             if (query.isBlank()) continue;
 
-            List<Document> vectorResults = searchVector(query, candidateK, threshold);
-            List<Bm25Retriever.ScoredDoc> bm25Results = bm25Retriever.search(query, candidateK);
+            List<Document> vectorResults = filterDocuments(searchVector(query, candidateK, threshold), tenantId, productCode, locale);
+            List<Bm25Retriever.ScoredDoc> bm25Results = bm25Retriever.search(query, candidateK).stream()
+                    .filter(result -> matches(result.getDocument(), tenantId, productCode, locale)).toList();
 
             int rank = 1;
             for (Document doc : vectorResults) {
@@ -87,6 +92,10 @@ public class Retriever {
     }
 
     public String retrieveSingle(String query) {
+        return retrieveSingle(query, "", "", "");
+    }
+
+    public String retrieveSingle(String query, String tenantId, String productCode, String locale) {
         if (query == null || query.isBlank()) {
             return "【检索结果为空】用户输入为空，无法检索。";
         }
@@ -96,8 +105,9 @@ public class Retriever {
         double threshold = appProperties.getRag().getSimilarityThreshold();
         log.info("[rag] query={} topK={} threshold={}", query, topK, threshold);
 
-        List<Document> vectorResults = searchVector(query, candidateK, threshold);
-        List<Bm25Retriever.ScoredDoc> bm25Results = bm25Retriever.search(query, candidateK);
+        List<Document> vectorResults = filterDocuments(searchVector(query, candidateK, threshold), tenantId, productCode, locale);
+        List<Bm25Retriever.ScoredDoc> bm25Results = bm25Retriever.search(query, candidateK).stream()
+                .filter(result -> matches(result.getDocument(), tenantId, productCode, locale)).toList();
 
         Map<String, RrfDoc> rrfMap = new LinkedHashMap<>();
         int rank = 1;
@@ -158,6 +168,24 @@ public class Retriever {
                         .topK(topK)
                         .similarityThreshold(threshold)
                         .build());
+    }
+
+    private static List<Document> filterDocuments(List<Document> documents, String tenantId, String productCode, String locale) {
+        return documents.stream().filter(document -> matches(document, tenantId, productCode, locale)).toList();
+    }
+
+    private static boolean matches(Document document, String tenantId, String productCode, String locale) {
+        Map<String, Object> metadata = document.getMetadata();
+        return matchesField(metadata, "tenantId", tenantId)
+                && matchesField(metadata, "productCode", productCode)
+                && matchesField(metadata, "locale", locale);
+    }
+
+    /** Missing metadata denotes shared knowledge; populated metadata must match the trusted request scope. */
+    private static boolean matchesField(Map<String, Object> metadata, String key, String expected) {
+        Object actual = metadata.get(key);
+        return actual == null || String.valueOf(actual).isBlank()
+                || (!expected.isBlank() && String.valueOf(actual).equalsIgnoreCase(expected));
     }
 
     /**

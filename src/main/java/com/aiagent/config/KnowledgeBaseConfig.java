@@ -141,8 +141,13 @@ public class KnowledgeBaseConfig {
                                 String source = (String) record.getOrDefault("source", "unknown");
                                 String id = (String) record.getOrDefault("id", source);
 
-                                Document doc = new Document(content,
-                                        Map.of("source", source, "chunk_id", id));
+                                Map<String, Object> metadata = new java.util.HashMap<>();
+                                metadata.put("source", source);
+                                metadata.put("chunk_id", id);
+                                copyMetadata(record, metadata, "tenantId");
+                                copyMetadata(record, metadata, "productCode");
+                                copyMetadata(record, metadata, "locale");
+                                Document doc = new Document(content, metadata);
                                 docs.add(doc);
                             }
                             log.debug("  加载: {} → {} chunks", filePath.getFileName(), docs.size());
@@ -155,5 +160,10 @@ public class KnowledgeBaseConfig {
         }
 
         return docs;
+    }
+
+    private static void copyMetadata(Map<String, Object> source, Map<String, Object> target, String key) {
+        Object value = source.get(key);
+        if (value != null && !String.valueOf(value).isBlank()) target.put(key, String.valueOf(value));
     }
 }

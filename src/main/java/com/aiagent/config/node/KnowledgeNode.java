@@ -41,11 +41,14 @@ public class KnowledgeNode {
             String route = readValue((OverAllState) state, "route");
             String historySummary = readValue((OverAllState) state, "historySummary");
             String recentHistory = readValue((OverAllState) state, "recentHistory");
+            String tenantId = readValue((OverAllState) state, "tenantId");
+            String productCode = readValue((OverAllState) state, "productCode");
+            String locale = readValue((OverAllState) state, "locale");
             log.info("[knowledge_base] route={} input={}", route, input);
 
             String cleaned = queryCleaner.cleanQuery(input);
             List<String> queries = queryRewriter.rewriteQuery(cleaned, historySummary, recentHistory);
-            String retrieved = retriever.retrieveMultiQuery(queries);
+            String retrieved = retriever.retrieveMultiQuery(queries, tenantId, productCode, locale);
             EvidenceGate.EvidenceDecision evidence = evidenceGate.assess(retrieved);
             log.info("[knowledge_base] retrieved {} chars", retrieved.length());
 
