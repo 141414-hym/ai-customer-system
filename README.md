@@ -1,5 +1,10 @@
 # AI 智能客服 Agent
 
+[![CI](https://github.com/141414-hym/ai-customer-system/actions/workflows/verify.yml/badge.svg)](https://github.com/141414-hym/ai-customer-system/actions/workflows/verify.yml)
+![Java](https://img.shields.io/badge/Java-17%2B-orange)
+![Spring%20Boot](https://img.shields.io/badge/Spring%20Boot-3.5-brightgreen)
+![Spring%20AI%20Alibaba](https://img.shields.io/badge/Spring%20AI%20Alibaba-Graph-blue)
+
 基于 Java 17、Spring Boot 与 Spring AI Alibaba 构建的智能客服 Agent。它以状态图编排请求，覆盖受认证保护的会话问答、混合 RAG 检索、订单状态查询、会话上下文持久化和同步/SSE 两种响应方式。
 
 ## 已实现能力
@@ -68,6 +73,8 @@ HTTP / SSE
 
 所有 `/chat/**` 接口都需要 Bearer JWT。JWT subject 是用户 ID；若 JWT 带 `tenant_id` claim，它会作为可信租户标识写入会话记录。请求中的 `tenantId` 不被信任，也不参与权限判断。
 
+本地调用时，请使用由 `AI_JWT_SECRET` 对应的 HS256 密钥签发的 JWT；Token 的 `sub` 为用户 ID，可选 `tenant_id` 为租户标识。
+
 ### 同步问答
 
 ```bash
@@ -94,13 +101,29 @@ curl -N -X POST http://localhost:8081/chat/ask/stream \
 
 RAG 完成事件包含 `citations`，每项提供 `source`、`chunkId` 和截断后的 `snippet`，便于前端展示引用来源。
 
+### 返回事件示例
+
+```json
+{
+  "eventType": "node_completed",
+  "node": "ai_reply",
+  "sessionId": "session-001",
+  "state": {
+    "answer": "G6 的质保政策包括……",
+    "citations": [
+      {"source": "xp_warranty.md", "chunkId": "warranty-01", "snippet": "整车质保……"}
+    ]
+  }
+}
+```
+
 ## 测试
 
 ```bash
 ./mvnw test
 ```
 
-测试使用 H2 或 Mock，不需要 DashScope、MySQL、Redis 服务。评测脚本与历史结果位于项目根目录；GitHub Actions 会自动执行 `./mvnw --batch-mode verify`。
+测试使用 H2 或 Mock，不需要 DashScope、MySQL、Redis 服务。离线评测脚本和测试数据位于 [`evaluation/`](evaluation/README.md)；GitHub Actions 会自动执行 `./mvnw --batch-mode verify`。
 
 ## 容器化与生产配置
 
