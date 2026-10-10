@@ -4,6 +4,15 @@ server:
 spring:
   application:
     name: aiagent
+  datasource:
+    url: ${DB_URL:jdbc:mysql://localhost:3306/aiagent?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai}
+    username: ${DB_USERNAME:aiagent}
+    password: ${DB_PASSWORD:aiagent-dev-password}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
   ai:
     dashscope:
       api-key: ${AI_DASHSCOPE_API_KEY:}
@@ -13,6 +22,11 @@ spring:
           temperature: 0.1
 
 assistant:
+  models:
+    route: ${AI_ROUTE_MODEL:qwen-turbo}
+    rewrite: ${AI_REWRITE_MODEL:qwen-turbo}
+    answer: ${AI_ANSWER_MODEL:qwen-plus}
+    summary: ${AI_SUMMARY_MODEL:qwen-turbo}
   app:
     name: aiagent
     default-locale: zh-CN
@@ -23,8 +37,15 @@ assistant:
     max-iterations: 4
   memory:
     enabled: true
+    checkpoint-directory: data/checkpoints
+  security:
+    jwt-secret: ${AI_JWT_SECRET:change-this-development-secret-please-rotate}
 
 logging:
+  file:
+    name: logs/aiagent.log
+  pattern:
+    level: "%5p [trace=%X{traceId}]"
   level:
     com.aiagent: DEBUG
     com.alibaba.cloud.ai: INFO

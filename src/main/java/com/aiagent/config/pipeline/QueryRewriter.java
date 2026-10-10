@@ -4,6 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.model.ChatModel;
+import com.aiagent.config.model.ModelRegistry;
+import com.aiagent.config.model.ModelRole;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -21,13 +23,17 @@ public class QueryRewriter {
 
     private static final Logger log = LoggerFactory.getLogger(QueryRewriter.class);
 
-    public List<String> rewriteQuery(ChatModel chatModel, String cleanedInput,
+    private final ModelRegistry modelRegistry;
+
+    public QueryRewriter(ModelRegistry modelRegistry) { this.modelRegistry = modelRegistry; }
+
+    public List<String> rewriteQuery(String cleanedInput,
                                      String historySummary, String recentHistory) {
         if (cleanedInput == null || cleanedInput.isBlank()) {
             return List.of();
         }
 
-        ChatClient client = ChatClient.builder(chatModel).build();
+        ChatClient client = modelRegistry.client(ModelRole.REWRITE);
         StringBuilder historyContext = new StringBuilder();
         if (!historySummary.isBlank()) {
             historyContext.append("更早对话摘要：").append(historySummary).append("\n");

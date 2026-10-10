@@ -4,6 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.model.ChatModel;
+import com.aiagent.config.model.ModelRegistry;
+import com.aiagent.config.model.ModelRole;
 import org.springframework.stereotype.Component;
 
 /**
@@ -14,9 +16,13 @@ public class HistoryManager {
 
     private static final Logger log = LoggerFactory.getLogger(HistoryManager.class);
 
-    public String compressHistory(ChatModel chatModel, String historySummary) {
+    private final ModelRegistry modelRegistry;
+
+    public HistoryManager(ModelRegistry modelRegistry) { this.modelRegistry = modelRegistry; }
+
+    public String compressHistory(String historySummary) {
         log.info("[compress_history] compressing {} chars of history", historySummary.length());
-        ChatClient client = ChatClient.builder(chatModel).build();
+        ChatClient client = modelRegistry.client(ModelRole.SUMMARY);
         String prompt = """
                 请将以下对话历史压缩为一段简洁摘要，保留关键信息（用户问题、处理结果、未解决问题等），去掉冗余细节。
 

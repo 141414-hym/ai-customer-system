@@ -1,6 +1,10 @@
 package com.aiagent.config.node;
 
 import com.aiagent.config.pipeline.HistoryManager;
+import com.aiagent.guard.AnswerGuard;
+import com.aiagent.guard.ModelCallBudget;
+import com.aiagent.config.model.ModelRegistry;
+import com.aiagent.config.model.ModelRole;
 import com.alibaba.cloud.ai.graph.OverAllState;
 import com.alibaba.cloud.ai.graph.action.AsyncNodeAction;
 import org.slf4j.Logger;
@@ -19,25 +23,39 @@ public class AiReplyNode {
 
     private static final Logger log = LoggerFactory.getLogger(AiReplyNode.class);
 
-    private final ChatModel chatModel;
+    private final ModelRegistry modelRegistry;
     private final HistoryManager historyManager;
+    private final AnswerGuard answerGuard;
+    private final ModelCallBudget modelCallBudget;
 
-    public AiReplyNode(ChatModel chatModel, HistoryManager historyManager) {
-        this.chatModel = chatModel;
+    public AiReplyNode(ModelRegistry modelRegistry, HistoryManager historyManager, AnswerGuard answerGuard,
+                       ModelCallBudget modelCallBudget) {
+        this.modelRegistry = modelRegistry;
         this.historyManager = historyManager;
+        this.answerGuard = answerGuard;
+        this.modelCallBudget = modelCallBudget;
     }
 
     public AsyncNodeAction getAction() {
         return node_async(state -> {
             String input = readValue((OverAllState) state, "input");
+            String sessionId = readValue((OverAllState) state, "sessionId");
             String answer = readValue((OverAllState) state, "answer");
             String subQueriesRaw = readValue((OverAllState) state, "subQueries");
             String historySummary = readValue((OverAllState) state, "historySummary");
             String recentHistory = readValue((OverAllState) state, "recentHistory");
+            String traceId = readValue((OverAllState) state, "traceId");
+            boolean evidenceSufficient = readBoolean((OverAllState) state, "evidenceSufficient");
             int turnIndex = readInt((OverAllState) state, "turnIndex", 0);
             log.info("[ai_reply] input={} answer={} turnIndex={}", input, answer, turnIndex);
 
+            if (!evidenceSufficient && "knowledge_base".equals(readValue((OverAllState) state, "route"))) {
+                return Map.of("answer", "抱歉，我暂时没有找到足够可靠的知识依据来回答这个问题。请补充更多信息，或转人工客服协助。",
+                        "answerGuard", "REFUSE_INSUFFICIENT_EVIDENCE");
+            }
+
             // 构建历史上下文
+            long nodeStart = System.nanoTime();
             StringBuilder historyContext = new StringBuilder();
             if (!historySummary.isBlank()) {
                 historyContext.append("更早对话摘要：\n").append(historySummary).append("\n\n");
@@ -65,10 +83,32 @@ public class AiReplyNode {
             }
 
             promptBuilder.append("请用自然语言整理上述信息，简洁友好地回复用户。");
+            long promptBuildMs = elapsedMs(nodeStart);
+
+            if (!modelCallBudget.tryAcquire(sessionId + ":" + turnIndex)) {
+                return Map.of("answer", "当前请求已达到模型调用预算，请稍后重试或转人工客服。",
+                        "answerGuard", "BUDGET_EXCEEDED");
+            }
 
             String prompt = promptBuilder.toString();
-            ChatClient client = ChatClient.builder(chatModel).build();
-            String reply = client.prompt().user(prompt).call().content();
+            long modelStart = System.nanoTime();
+            ChatClient client = modelRegistry.client(ModelRole.ANSWER);
+            String reply;
+            try {
+                reply = client.prompt().user(prompt).call().content();
+            } catch (RuntimeException ex) {
+                log.error("[ai_reply_timing] traceId={} stage=model_call_failed modelRole=ANSWER promptChars={} elapsedMs={} error={}",
+                        traceId, prompt.length(), elapsedMs(modelStart), ex.toString());
+                throw ex;
+            }
+            long modelCallMs = elapsedMs(modelStart);
+            long guardStart = System.nanoTime();
+            AnswerGuard.Decision guard = answerGuard.validate(reply);
+            long guardMs = elapsedMs(guardStart);
+            if (!guard.allowed()) {
+                return Map.of("answer", "抱歉，当前回答未通过安全校验，请转人工客服协助。",
+                        "answerGuard", "REJECTED_" + guard.reason());
+            }
 
             // 历史管理：最近3轮原文 + 更早的摘要
             String updatedRecent = recentHistory.isBlank()
@@ -86,7 +126,10 @@ public class AiReplyNode {
                     updatedSummary = historySummary.isBlank()
                             ? oldestRound
                             : historySummary + "\n" + oldestRound;
-                    updatedSummary = historyManager.compressHistory(chatModel, updatedSummary);
+                    long summaryStart = System.nanoTime();
+                    updatedSummary = historyManager.compressHistory(updatedSummary);
+                    log.info("[ai_reply_timing] traceId={} stage=history_summary modelRole=SUMMARY elapsedMs={}",
+                            traceId, elapsedMs(summaryStart));
                     // 保留最近3轮
                     updatedRecent = "用户: " + String.join("\n\n用户: ",
                             java.util.Arrays.copyOfRange(rounds, 1, rounds.length));
@@ -95,10 +138,21 @@ public class AiReplyNode {
             }
 
             log.info("[ai_reply] reply={} turnIndex={}", reply, newTurnIndex);
+            log.info("[ai_reply_timing] traceId={} stage=breakdown modelRole=ANSWER promptChars={} promptBuildMs={} modelCallMs={} answerGuardMs={} totalMs={}",
+                    traceId, prompt.length(), promptBuildMs, modelCallMs, guardMs, elapsedMs(nodeStart));
             return Map.of("answer", reply,
                     "historySummary", updatedSummary,
                     "recentHistory", updatedRecent,
-                    "turnIndex", newTurnIndex);
+                    "turnIndex", newTurnIndex,
+                    "promptBuildMs", promptBuildMs,
+                    "modelCallMs", modelCallMs,
+                    "answerGuardMs", guardMs,
+                    "aiReplyTotalMs", elapsedMs(nodeStart),
+                    "modelRole", ModelRole.ANSWER.name());
         });
+    }
+
+    private static long elapsedMs(long startNanos) {
+        return Math.max(0L, (System.nanoTime() - startNanos) / 1_000_000L);
     }
 }

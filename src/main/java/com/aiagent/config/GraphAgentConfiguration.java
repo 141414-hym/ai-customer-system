@@ -2,17 +2,21 @@ package com.aiagent.config;
 
 import com.aiagent.config.node.*;
 import com.alibaba.cloud.ai.graph.CompiledGraph;
+import com.alibaba.cloud.ai.graph.CompileConfig;
 import com.alibaba.cloud.ai.graph.KeyStrategy;
 import com.alibaba.cloud.ai.graph.KeyStrategyFactory;
 import com.alibaba.cloud.ai.graph.StateGraph;
 import com.alibaba.cloud.ai.graph.state.strategy.AppendStrategy;
 import com.alibaba.cloud.ai.graph.state.strategy.ReplaceStrategy;
 import com.alibaba.cloud.ai.graph.exception.GraphStateException;
+import com.alibaba.cloud.ai.graph.checkpoint.config.SaverConfig;
+import com.alibaba.cloud.ai.graph.checkpoint.savers.file.FileSystemSaver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.nio.file.Path;
 
 import static com.alibaba.cloud.ai.graph.StateGraph.END;
 import static com.alibaba.cloud.ai.graph.StateGraph.START;
@@ -32,11 +36,13 @@ public class GraphAgentConfiguration {
     private final ExternalSearchNode externalSearchNode;
     private final HumanHandoffNode humanHandoffNode;
     private final AiReplyNode aiReplyNode;
+    private final AppProperties appProperties;
 
     public GraphAgentConfiguration(SemanticRouteNode semanticRouteNode, ClarifyNode clarifyNode,
                                    FaqNode faqNode, KnowledgeNode knowledgeNode,
                                    BusinessToolNode businessToolNode, ExternalSearchNode externalSearchNode,
-                                   HumanHandoffNode humanHandoffNode, AiReplyNode aiReplyNode) {
+                                   HumanHandoffNode humanHandoffNode, AiReplyNode aiReplyNode,
+                                   AppProperties appProperties) {
         this.semanticRouteNode = semanticRouteNode;
         this.clarifyNode = clarifyNode;
         this.faqNode = faqNode;
@@ -45,6 +51,7 @@ public class GraphAgentConfiguration {
         this.externalSearchNode = externalSearchNode;
         this.humanHandoffNode = humanHandoffNode;
         this.aiReplyNode = aiReplyNode;
+        this.appProperties = appProperties;
     }
 
     @Bean
@@ -53,11 +60,13 @@ public class GraphAgentConfiguration {
             Map<String, KeyStrategy> strategies = new HashMap<>();
             // 输入层
             strategies.put("input", new ReplaceStrategy());
+            strategies.put("userId", new ReplaceStrategy());
             strategies.put("sessionId", new ReplaceStrategy());
-            strategies.put("tenantId", new ReplaceStrategy());
-            strategies.put("productCode", new ReplaceStrategy());
-            strategies.put("locale", new ReplaceStrategy());
-            strategies.put("messages", new AppendStrategy(false));
+  strategies.put("tenantId", new ReplaceStrategy());
+  strategies.put("productCode", new ReplaceStrategy());
+  strategies.put("locale", new ReplaceStrategy());
+  strategies.put("messages", new AppendStrategy(false));
+
             // 历史上下文
             strategies.put("historySummary", new ReplaceStrategy());
             strategies.put("recentHistory", new ReplaceStrategy());
@@ -121,7 +130,20 @@ public class GraphAgentConfiguration {
                 .addEdge("human_handoff", END)
                 .addEdge("ai_reply", END);
 
-        return graph.compile();
+        FileSystemSaver checkpointSaver = FileSystemSaver.builder()
+                .targetFolder(Path.of(appProperties.getMemory().getCheckpointDirectory()))
+                .stateSerializer(graph.getStateSerializer())
+                .build();
+
+        SaverConfig saverConfig = SaverConfig.builder()
+                .register(checkpointSaver)
+                .build();
+
+        CompileConfig compileConfig = CompileConfig.builder()
+                .saverConfig(saverConfig)
+                .build();
+
+        return graph.compile(compileConfig);
     }
 
     private String resolveAfterSemanticRoute(com.alibaba.cloud.ai.graph.OverAllState state) {

@@ -10,6 +10,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.stereotype.Component;
+import com.aiagent.config.model.ModelRegistry;
+import com.aiagent.config.model.ModelRole;
+import com.aiagent.guard.ModelCallBudget;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,10 +30,12 @@ public class SemanticRouteNode {
 
     private static final Logger log = LoggerFactory.getLogger(SemanticRouteNode.class);
 
-    private final ChatModel chatModel;
+    private final ModelRegistry modelRegistry;
+    private final ModelCallBudget modelCallBudget;
 
-    public SemanticRouteNode(ChatModel chatModel) {
-        this.chatModel = chatModel;
+    public SemanticRouteNode(ModelRegistry modelRegistry, ModelCallBudget modelCallBudget) {
+        this.modelRegistry = modelRegistry;
+        this.modelCallBudget = modelCallBudget;
     }
 
     public AsyncNodeAction getAction() {
@@ -122,7 +127,9 @@ public class SemanticRouteNode {
     // ========== LLM 打分 ==========
 
     private EntryDecision analyzeByModel(EntryContext context, EntryDecision codeDecision) {
-        ChatClient client = ChatClient.builder(chatModel).build();
+        String traceId = context.sessionId() + ":" + context.turnIndex();
+        if (!modelCallBudget.tryAcquire(traceId)) return codeDecision;
+        ChatClient client = modelRegistry.client(ModelRole.ROUTE);
         String prompt = """
                 # 角色定位
                 你是客服系统的意图路由器。你的职责是根据用户输入判断应该走哪个处理分支。

@@ -2,6 +2,8 @@
 .idea/
 .vscode/
 target/
+data/checkpoints/
+logs/
 *.log
 knowledge_base/chunks/*.tmp
 null

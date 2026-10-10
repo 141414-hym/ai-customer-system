@@ -3,11 +3,12 @@ package com.aiagent.config.node;
 import com.aiagent.config.pipeline.QueryCleaner;
 import com.aiagent.config.pipeline.QueryRewriter;
 import com.aiagent.config.pipeline.Retriever;
+import com.aiagent.config.pipeline.EvidenceGate;
 import com.alibaba.cloud.ai.graph.OverAllState;
 import com.alibaba.cloud.ai.graph.action.AsyncNodeAction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.ai.chat.model.ChatModel;
+import com.aiagent.config.model.ModelRegistry;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -21,17 +22,17 @@ public class KnowledgeNode {
 
     private static final Logger log = LoggerFactory.getLogger(KnowledgeNode.class);
 
-    private final ChatModel chatModel;
     private final QueryCleaner queryCleaner;
     private final QueryRewriter queryRewriter;
     private final Retriever retriever;
+    private final EvidenceGate evidenceGate;
 
-    public KnowledgeNode(ChatModel chatModel, QueryCleaner queryCleaner,
-                         QueryRewriter queryRewriter, Retriever retriever) {
-        this.chatModel = chatModel;
+    public KnowledgeNode(ModelRegistry modelRegistry, QueryCleaner queryCleaner,
+                         QueryRewriter queryRewriter, Retriever retriever, EvidenceGate evidenceGate) {
         this.queryCleaner = queryCleaner;
         this.queryRewriter = queryRewriter;
         this.retriever = retriever;
+        this.evidenceGate = evidenceGate;
     }
 
     public AsyncNodeAction getAction() {
@@ -43,11 +44,14 @@ public class KnowledgeNode {
             log.info("[knowledge_base] route={} input={}", route, input);
 
             String cleaned = queryCleaner.cleanQuery(input);
-            List<String> queries = queryRewriter.rewriteQuery(chatModel, cleaned, historySummary, recentHistory);
+            List<String> queries = queryRewriter.rewriteQuery(cleaned, historySummary, recentHistory);
             String retrieved = retriever.retrieveMultiQuery(queries);
+            EvidenceGate.EvidenceDecision evidence = evidenceGate.assess(retrieved);
             log.info("[knowledge_base] retrieved {} chars", retrieved.length());
 
-            return Map.of("answer", retrieved, "subQueries", String.join("|||", queries), "route", "ai_reply");
+            return Map.of("answer", retrieved, "subQueries", String.join("|||", queries),
+                    "evidenceSufficient", evidence.sufficient(), "evidenceCount", evidence.count(),
+                    "evidenceReason", evidence.reason(), "route", "ai_reply");
         });
     }
 }

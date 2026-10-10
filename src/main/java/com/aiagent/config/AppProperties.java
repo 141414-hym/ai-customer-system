@@ -82,6 +82,7 @@ public class AppProperties {
 
     public static class Memory {
         private boolean enabled = true;
+        private String checkpointDirectory = "data/checkpoints";
 
         public boolean isEnabled() {
             return enabled;
@@ -89,6 +90,14 @@ public class AppProperties {
 
         public void setEnabled(boolean enabled) {
             this.enabled = enabled;
+        }
+
+        public String getCheckpointDirectory() {
+            return checkpointDirectory;
+        }
+
+        public void setCheckpointDirectory(String checkpointDirectory) {
+            this.checkpointDirectory = checkpointDirectory;
         }
     }
 }

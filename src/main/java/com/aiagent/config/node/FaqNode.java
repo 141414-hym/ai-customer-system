@@ -7,7 +7,6 @@ import com.alibaba.cloud.ai.graph.OverAllState;
 import com.alibaba.cloud.ai.graph.action.AsyncNodeAction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -21,14 +20,12 @@ public class FaqNode {
 
     private static final Logger log = LoggerFactory.getLogger(FaqNode.class);
 
-    private final ChatModel chatModel;
     private final QueryCleaner queryCleaner;
     private final QueryRewriter queryRewriter;
     private final Retriever retriever;
 
-    public FaqNode(ChatModel chatModel, QueryCleaner queryCleaner,
+    public FaqNode(QueryCleaner queryCleaner,
                    QueryRewriter queryRewriter, Retriever retriever) {
-        this.chatModel = chatModel;
         this.queryCleaner = queryCleaner;
         this.queryRewriter = queryRewriter;
         this.retriever = retriever;
@@ -43,7 +40,7 @@ public class FaqNode {
             log.info("[faq] route={} input={}", route, input);
 
             String cleaned = queryCleaner.cleanQuery(input);
-            List<String> queries = queryRewriter.rewriteQuery(chatModel, cleaned, historySummary, recentHistory);
+            List<String> queries = queryRewriter.rewriteQuery(cleaned, historySummary, recentHistory);
             String retrieved = retriever.retrieveMultiQuery(queries);
             log.info("[faq] retrieved {} chars", retrieved.length());
 

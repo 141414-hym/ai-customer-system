@@ -1,0 +1,36 @@
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: aiagent-mysql
+    environment:
+      MYSQL_DATABASE: aiagent
+      MYSQL_USER: aiagent
+      MYSQL_PASSWORD: aiagent-dev-password
+      MYSQL_ROOT_PASSWORD: root-dev-password
+    ports:
+      - "3306:3306"
+    volumes:
+      - aiagent_mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -uaiagent -paiagent-dev-password"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  redis:
+    image: redis:7.4
+    container_name: aiagent-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - aiagent_redis_data:/data
+    command: ["redis-server", "--appendonly", "yes"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+volumes:
+  aiagent_mysql_data:
+  aiagent_redis_data:

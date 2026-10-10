@@ -1,6 +1,8 @@
 package com.aiagent.config.pipeline;
 
 import com.aiagent.config.AppProperties;
+import com.alibaba.cloud.ai.dashscope.api.DashScopeApi;
+import com.alibaba.cloud.ai.dashscope.spec.DashScopeApiSpec;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.document.Document;
@@ -24,11 +26,14 @@ public class Retriever {
     private final VectorStore vectorStore;
     private final Bm25Retriever bm25Retriever;
     private final AppProperties appProperties;
+    private final DashScopeApi dashScopeApi;
 
-    public Retriever(VectorStore vectorStore, Bm25Retriever bm25Retriever, AppProperties appProperties) {
+    public Retriever(VectorStore vectorStore, Bm25Retriever bm25Retriever, AppProperties appProperties,
+                     DashScopeApi dashScopeApi) {
         this.vectorStore = vectorStore;
         this.bm25Retriever = bm25Retriever;
         this.appProperties = appProperties;
+        this.dashScopeApi = dashScopeApi;
     }
 
     public String retrieveMultiQuery(List<String> queries) {
@@ -40,6 +45,7 @@ public class Retriever {
         }
 
         int topK = appProperties.getRag().getTopK();
+        int candidateK = Math.max(10, topK);
         double threshold = appProperties.getRag().getSimilarityThreshold();
         log.info("[rag] multi_query: {} sub-queries, topK={}, threshold={}", queries.size(), topK, threshold);
 
@@ -48,8 +54,8 @@ public class Retriever {
         for (String query : queries) {
             if (query.isBlank()) continue;
 
-            List<Document> vectorResults = searchVector(query, topK, threshold);
-            List<Bm25Retriever.ScoredDoc> bm25Results = bm25Retriever.search(query, topK);
+            List<Document> vectorResults = searchVector(query, candidateK, threshold);
+            List<Bm25Retriever.ScoredDoc> bm25Results = bm25Retriever.search(query, candidateK);
 
             int rank = 1;
             for (Document doc : vectorResults) {
@@ -71,11 +77,13 @@ public class Retriever {
 
         List<RrfDoc> merged = rrfMap.values().stream()
                 .sorted((a, b) -> Double.compare(b.rrfScore, a.rrfScore))
-                .limit(topK * 2L)
+                .limit(candidateK * 2L)
                 .collect(Collectors.toList());
 
-        log.info("[rag] multi_query: {} sub-queries → {} unique merged (rrf)", queries.size(), merged.size());
-        return formatRrfResults(merged);
+        List<RrfDoc> reranked = rerank(queries.get(0), merged, topK);
+        log.info("[rag] multi_query: {} sub-queries → {} RRF candidates → {} reranked",
+                queries.size(), merged.size(), reranked.size());
+        return formatRrfResults(reranked);
     }
 
     public String retrieveSingle(String query) {
@@ -84,11 +92,12 @@ public class Retriever {
         }
 
         int topK = appProperties.getRag().getTopK();
+        int candidateK = Math.max(10, topK);
         double threshold = appProperties.getRag().getSimilarityThreshold();
         log.info("[rag] query={} topK={} threshold={}", query, topK, threshold);
 
-        List<Document> vectorResults = searchVector(query, topK, threshold);
-        List<Bm25Retriever.ScoredDoc> bm25Results = bm25Retriever.search(query, topK);
+        List<Document> vectorResults = searchVector(query, candidateK, threshold);
+        List<Bm25Retriever.ScoredDoc> bm25Results = bm25Retriever.search(query, candidateK);
 
         Map<String, RrfDoc> rrfMap = new LinkedHashMap<>();
         int rank = 1;
@@ -104,12 +113,42 @@ public class Retriever {
 
         List<RrfDoc> merged = rrfMap.values().stream()
                 .sorted((a, b) -> Double.compare(b.rrfScore, a.rrfScore))
-                .limit(topK * 2L)
+                .limit(candidateK * 2L)
                 .collect(Collectors.toList());
 
-        log.info("[rag] single_query: vector={} bm25={} rrf_merged={}",
-                vectorResults.size(), bm25Results.size(), merged.size());
-        return formatRrfResults(merged);
+        List<RrfDoc> reranked = rerank(query, merged, topK);
+        log.info("[rag] single_query: vector={} bm25={} rrf_candidates={} reranked={}",
+                vectorResults.size(), bm25Results.size(), merged.size(), reranked.size());
+        return formatRrfResults(reranked);
+    }
+
+    /** Lightweight deterministic rerank over the fused candidate pool. */
+    private List<RrfDoc> rerank(String query, List<RrfDoc> candidates, int finalTopK) {
+        try {
+            List<String> documents = candidates.stream().map(d -> d.doc.getText()).toList();
+            DashScopeApiSpec.RerankRequest request = new DashScopeApiSpec.RerankRequest(
+                    "qwen3.7-text-rerank",
+                    new DashScopeApiSpec.RerankRequestInput(query, documents),
+                    new DashScopeApiSpec.RerankRequestParameter(finalTopK, false));
+            var response = dashScopeApi.rerankEntity(request).getBody();
+            if (response != null && response.output() != null && response.output().results() != null) {
+                return response.output().results().stream()
+                        .sorted(Comparator.comparingDouble(DashScopeApiSpec.RerankResponseOutputResult::relevanceScore).reversed())
+                        .limit(finalTopK)
+                        .map(r -> candidates.get(r.index()))
+                        .toList();
+            }
+        } catch (Exception e) {
+            log.warn("[rag] qwen rerank failed, fallback to local ranking: {}", e.getMessage());
+        }
+        return candidates.stream().sorted(Comparator.comparingDouble(this::rerankScore).reversed())
+                .limit(finalTopK).toList();
+    }
+
+    private double rerankScore(RrfDoc doc) {
+        double vector = doc.vectorScore == null ? 0.0 : doc.vectorScore;
+        double bm25 = doc.bm25Score == null ? 0.0 : Math.min(1.0, doc.bm25Score / 10.0);
+        return doc.rrfScore + vector * 0.01 + bm25 * 0.01;
     }
 
     private List<Document> searchVector(String query, int topK, double threshold) {

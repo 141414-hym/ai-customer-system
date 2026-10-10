@@ -1,0 +1,35 @@
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT:6379}
+  sql:
+    init:
+      mode: never
+  ai:
+    dashscope:
+      api-key: ${AI_DASHSCOPE_API_KEY}
+
+assistant:
+  memory:
+    checkpoint-directory: ${CHECKPOINT_DIRECTORY:/app/data/checkpoints}
+  security:
+    jwt-secret: ${AI_JWT_SECRET}
+
+logging:
+  level:
+    com.aiagent: INFO
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true

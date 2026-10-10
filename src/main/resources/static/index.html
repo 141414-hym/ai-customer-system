@@ -162,6 +162,8 @@
 
     let sessionId = newSessionId();
     let turnCount = 0;
+    // 本地学习阶段的固定用户；生产环境应从服务端认证结果中获取。
+    const userId = 'local-user-001';
     const tenantId = 't001';
     const productCode = 'p001';
     const locale = 'zh-CN';
@@ -221,6 +223,7 @@
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
+            userId: userId,
             sessionId: sessionId,
             tenantId: tenantId,
             productCode: productCode,
