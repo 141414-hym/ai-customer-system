@@ -183,6 +183,7 @@ public class Retriever {
 
             sb.append("---\n");
             sb.append("来源: ").append(source)
+                    .append(" | chunkId: ").append(doc.getId())
                     .append(" | 向量得分: ").append(vectorStr)
                     .append(" | BM25得分: ").append(bm25Str)
                     .append(" | RRF排名: ").append(i + 1)
@@ -192,6 +193,31 @@ public class Retriever {
         }
         sb.append("---\n以上共 ").append(docs.size()).append(" 条检索结果。");
         return sb.toString();
+    }
+
+    /** Public, serializable citations for API clients; the answer context stays separate. */
+    public List<Map<String, String>> citationsFrom(String retrieved) {
+        if (retrieved == null || retrieved.isBlank()) return List.of();
+        List<Map<String, String>> citations = new ArrayList<>();
+        for (String part : retrieved.split("---\\n")) {
+            if (!part.startsWith("来源: ")) continue;
+            String[] lines = part.split("\\n", 2);
+            String header = lines[0];
+            String source = valueAfter(header, "来源: ", " | ");
+            String chunkId = valueAfter(header, "chunkId: ", " | ");
+            String snippet = lines.length > 1 ? lines[1].trim() : "";
+            citations.add(Map.of("source", source, "chunkId", chunkId,
+                    "snippet", snippet.substring(0, Math.min(240, snippet.length()))));
+        }
+        return citations;
+    }
+
+    private static String valueAfter(String value, String prefix, String terminator) {
+        int start = value.indexOf(prefix);
+        if (start < 0) return "";
+        start += prefix.length();
+        int end = value.indexOf(terminator, start);
+        return (end < 0 ? value.substring(start) : value.substring(start, end)).trim();
     }
 
     private Double extractVectorScore(Document doc) {

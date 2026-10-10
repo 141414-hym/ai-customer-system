@@ -76,6 +76,8 @@ public class GraphAgentConfiguration {
             strategies.put("turnIndex", new ReplaceStrategy());
             // 决策层
             strategies.put("route", new ReplaceStrategy());
+            strategies.put("intentRoute", new ReplaceStrategy());
+            strategies.put("nextAction", new ReplaceStrategy());
             strategies.put("confidence", new ReplaceStrategy());
             strategies.put("decisionReason", new ReplaceStrategy());
             strategies.put("status", new ReplaceStrategy());
@@ -86,6 +88,7 @@ public class GraphAgentConfiguration {
             strategies.put("trace", new ReplaceStrategy());
             // 输出
             strategies.put("answer", new ReplaceStrategy());
+            strategies.put("citations", new ReplaceStrategy());
             return strategies;
         };
 
@@ -147,7 +150,7 @@ public class GraphAgentConfiguration {
     }
 
     private String resolveAfterSemanticRoute(com.alibaba.cloud.ai.graph.OverAllState state) {
-        String route = fallback(readValue(state, "route"), "external_search");
+        String route = fallback(readValue(state, "nextAction"), "clarify");
         return route;
     }
 

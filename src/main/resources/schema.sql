@@ -59,3 +59,15 @@ CREATE TABLE IF NOT EXISTS customer_order (
     CONSTRAINT uk_order_no_user UNIQUE (order_no, user_id)
 );
 CREATE INDEX idx_order_user_no ON customer_order (user_id, order_no);
+
+CREATE TABLE IF NOT EXISTS handoff_ticket (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    ticket_id VARCHAR(64) NOT NULL UNIQUE,
+    user_id VARCHAR(128) NOT NULL,
+    tenant_id VARCHAR(128),
+    conversation_id VARCHAR(64) NOT NULL,
+    reason VARCHAR(512) NOT NULL,
+    status VARCHAR(32) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+CREATE INDEX idx_handoff_conversation ON handoff_ticket (conversation_id, created_at);

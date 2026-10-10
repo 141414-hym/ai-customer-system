@@ -51,7 +51,8 @@ public class KnowledgeNode {
 
             return Map.of("answer", retrieved, "subQueries", String.join("|||", queries),
                     "evidenceSufficient", evidence.sufficient(), "evidenceCount", evidence.count(),
-                    "evidenceReason", evidence.reason(), "route", "ai_reply");
+                    "evidenceReason", evidence.reason(), "citations", retriever.citationsFrom(retrieved),
+                    "route", "ai_reply");
         });
     }
 }

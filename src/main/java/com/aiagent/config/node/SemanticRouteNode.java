@@ -13,6 +13,8 @@ import org.springframework.stereotype.Component;
 import com.aiagent.config.model.ModelRegistry;
 import com.aiagent.config.model.ModelRole;
 import com.aiagent.guard.ModelCallBudget;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,10 +34,13 @@ public class SemanticRouteNode {
 
     private final ModelRegistry modelRegistry;
     private final ModelCallBudget modelCallBudget;
+    private final ObjectMapper objectMapper;
 
-    public SemanticRouteNode(ModelRegistry modelRegistry, ModelCallBudget modelCallBudget) {
+    public SemanticRouteNode(ModelRegistry modelRegistry, ModelCallBudget modelCallBudget,
+                             ObjectMapper objectMapper) {
         this.modelRegistry = modelRegistry;
         this.modelCallBudget = modelCallBudget;
+        this.objectMapper = objectMapper;
     }
 
     public AsyncNodeAction getAction() {
@@ -64,6 +69,8 @@ public class SemanticRouteNode {
 
             Map<String, Object> update = new HashMap<>();
             update.put("route", finalDecision.route());
+            update.put("intentRoute", finalDecision.route());
+            update.put("nextAction", finalDecision.route());
             update.put("lastRoute", finalDecision.route());
             update.put("confidence", finalDecision.confidence());
             update.put("decisionReason", finalDecision.decisionReason());
@@ -193,9 +200,20 @@ public class SemanticRouteNode {
         if (content == null || content.isBlank()) {
             return fallbackDecision;
         }
-        String route = parseRoute(extractJsonValue(content, "route"), fallbackDecision.route());
-        double confidence = safeDouble(extractJsonValue(content, "confidence"), fallbackDecision.confidence());
-        String decisionReason = valueOrDefault(extractJsonValue(content, "decisionReason"), fallbackDecision.decisionReason());
+        String route = fallbackDecision.route();
+        double confidence = fallbackDecision.confidence();
+        String decisionReason = fallbackDecision.decisionReason();
+        try {
+            JsonNode node = objectMapper.readTree(content);
+            route = parseRoute(node.path("route").asText(), route);
+            double rawConfidence = node.path("confidence").asDouble(confidence);
+            confidence = rawConfidence > 1.0d ? normalizeScore(rawConfidence) : rawConfidence;
+            confidence = Math.max(0d, Math.min(1d, confidence));
+            decisionReason = valueOrDefault(node.path("decisionReason").asText(), decisionReason);
+        } catch (Exception ex) {
+            log.warn("[semantic_route] invalid structured model output, fallback to rules");
+            return fallbackDecision;
+        }
 
         Map<String, Object> trace = new HashMap<>();
         trace.put("modelRawContent", content);
@@ -233,6 +251,14 @@ public class SemanticRouteNode {
                                               Map<String, Double> finalScores) {
         String route = maxKey(finalScores);
         double confidence = normalizeScore(finalScores.getOrDefault(route, 0d));
+        String selectedRoute = route;
+        double secondScore = finalScores.entrySet().stream()
+                .filter(entry -> !entry.getKey().equals(selectedRoute))
+                .mapToDouble(Map.Entry::getValue).max().orElse(0d);
+        if (finalScores.getOrDefault(route, 0d) < 25d || finalScores.getOrDefault(route, 0d) - secondScore < 10d) {
+            route = "clarify";
+            confidence = normalizeScore(finalScores.getOrDefault(route, 0d));
+        }
         String reason = "融合代码(0.4)与模型(0.6)后得到最终决策";
 
         Map<String, Object> trace = new HashMap<>(llmDecision.trace());

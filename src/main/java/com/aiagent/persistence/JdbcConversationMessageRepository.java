@@ -91,6 +91,18 @@ public class JdbcConversationMessageRepository implements ConversationMessageRep
                 conversationId, clientMessageId);
     }
 
+    @Override
+    public Optional<String> findCompletedAnswer(String conversationId, String clientMessageId) {
+        return jdbc.query("""
+                SELECT assistant.content FROM chat_message user_message
+                JOIN chat_message assistant ON assistant.run_id=user_message.run_id
+                WHERE user_message.conversation_id=? AND user_message.client_message_id=?
+                  AND assistant.role='ASSISTANT' AND assistant.status='COMPLETED'
+                ORDER BY assistant.sequence_no DESC LIMIT 1
+                """, rs -> rs.next() ? Optional.of(rs.getString("content")) : Optional.empty(),
+                conversationId, clientMessageId);
+    }
+
     private static MessageRecord mapMessage(ResultSet rs) throws SQLException {
         return new MessageRecord(rs.getString("message_id"), rs.getString("conversation_id"),
                 rs.getLong("sequence_no"), rs.getString("role"), rs.getString("content"),

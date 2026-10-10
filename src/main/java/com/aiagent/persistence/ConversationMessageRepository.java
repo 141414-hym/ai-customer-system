@@ -14,6 +14,8 @@ public interface ConversationMessageRepository {
 
     Optional<MessageRecord> findByClientMessageId(String conversationId, String clientMessageId);
 
+    Optional<String> findCompletedAnswer(String conversationId, String clientMessageId);
+
     record ConversationRecord(String conversationId, String userId, String tenantId,
                                String threadId, long version) {}
 

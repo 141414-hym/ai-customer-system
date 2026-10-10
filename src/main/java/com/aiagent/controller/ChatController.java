@@ -34,6 +34,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.aiagent.observability.TraceIdFilter;
 import com.aiagent.guard.RunLimits;
+import com.aiagent.task.ChatTaskService;
 
 @RestController
 @RequestMapping("/chat")
@@ -48,6 +49,7 @@ public class ChatController {
     private final DistributedSessionLock distributedSessionLock;
     private final GlobalExecutionGate globalExecutionGate;
     private final SummaryTrigger summaryTrigger;
+    private final ChatTaskService chatTaskService;
     private final RunLimits runLimits = RunLimits.defaults();
 
     public ChatController(CompiledGraph customerSupportGraph,
@@ -56,7 +58,7 @@ public class ChatController {
                           RedisContextStore contextStore,
                           DistributedSessionLock distributedSessionLock,
                           GlobalExecutionGate globalExecutionGate,
-                          SummaryTrigger summaryTrigger) {
+                          SummaryTrigger summaryTrigger, ChatTaskService chatTaskService) {
         this.customerSupportGraph = customerSupportGraph;
         this.currentUserProvider = currentUserProvider;
         this.messageRepository = messageRepository;
@@ -64,6 +66,7 @@ public class ChatController {
         this.distributedSessionLock = distributedSessionLock;
         this.globalExecutionGate = globalExecutionGate;
         this.summaryTrigger = summaryTrigger;
+        this.chatTaskService = chatTaskService;
     }
 
     @PostMapping(value = "/ask", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -98,6 +101,20 @@ public class ChatController {
       return executeGraph(request, sessionKey);
   }
 
+  @PostMapping(value = "/tasks", produces = MediaType.APPLICATION_JSON_VALUE)
+  public Map<String, Object> submitTask(@Valid @RequestBody ChatRequest request) {
+      SessionKey sessionKey = currentUserProvider.sessionKey(request.sessionId());
+      runLimits.checkInput(request.message());
+      ChatTaskService.TaskRecord task = chatTaskService.submit(sessionKey.userId(), sessionKey.sessionId(),
+              () -> executeGraph(request, sessionKey).collectList().block());
+      return Map.of("taskId", task.taskId(), "status", task.status());
+  }
+
+  @org.springframework.web.bind.annotation.GetMapping(value = "/tasks/{taskId}", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ChatTaskService.TaskRecord getTask(@org.springframework.web.bind.annotation.PathVariable String taskId) {
+      return chatTaskService.get(taskId, currentUserProvider.userId());
+  }
+
 
     private Flux<ChatEvent> executeGraph(ChatRequest request, SessionKey sessionKey) {
         return Flux.defer(() -> {
@@ -112,7 +129,9 @@ public class ChatController {
                 var persisted = messageRepository.appendUserMessage(sessionKey.sessionId(), request.clientMessageId(),
                         runId, request.message().trim());
                 if (!persisted.newlyCreated()) {
-                    return Flux.error(new IllegalStateException("重复的clientMessageId，请使用原请求结果"));
+                    return messageRepository.findCompletedAnswer(sessionKey.sessionId(), request.clientMessageId())
+                            .map(answer -> Flux.just(idempotentEvent(sessionKey, answer)))
+                            .orElseGet(() -> Flux.error(new IllegalStateException("重复请求仍在处理中，请稍后重试")));
                 }
                 contextStore.appendMessage(sessionKey.userId(), sessionKey.sessionId(),
                         persisted.sequenceNo(), persisted.role(), persisted.content());
@@ -148,6 +167,11 @@ public class ChatController {
         });
     }
 
+    private ChatEvent idempotentEvent(SessionKey sessionKey, String answer) {
+        return new ChatEvent("completed", "idempotent_replay", sessionKey.userId(), sessionKey.sessionId(),
+                Map.of("answer", answer, "idempotentReplay", true));
+    }
+
     private void persistAssistantAnswer(SessionKey sessionKey, String runId, String answer, String status) {
         if ("COMPLETED".equals(status) && answer.isBlank()) return;
         var saved = messageRepository.appendAssistantMessage(sessionKey.sessionId(), runId, answer, status);
@@ -168,6 +192,7 @@ public class ChatController {
         copyIfPresent(event, publicState, "evidenceSufficient");
         copyIfPresent(event, publicState, "evidenceCount");
         copyIfPresent(event, publicState, "evidenceReason");
+        copyIfPresent(event, publicState, "citations");
         copyIfPresent(event, publicState, "answerGuard");
         copyIfPresent(event, publicState, "traceId");
         copyIfPresent(event, publicState, "promptBuildMs");

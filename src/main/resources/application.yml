@@ -40,6 +40,8 @@ assistant:
     checkpoint-directory: data/checkpoints
   security:
     jwt-secret: ${AI_JWT_SECRET:change-this-development-secret-please-rotate}
+  search:
+    endpoint: ${AI_SEARCH_ENDPOINT:}
 
 logging:
   file:

@@ -86,6 +86,12 @@ curl -N -X POST http://localhost:8081/chat/ask/stream \
 
 `sessionId` 最大 64 个字符，`clientMessageId` 最大 128 个字符，消息最大 16,000 字符。同一会话在执行期间会拒绝并发请求；重复的 `clientMessageId` 会被拒绝，客户端应复用原请求结果。
 
+### 异步任务
+
+`POST /chat/tasks` 使用与同步问答相同的请求体，立即返回 `taskId`；随后可通过 `GET /chat/tasks/{taskId}` 查询 `QUEUED`、`RUNNING`、`COMPLETED` 或 `FAILED` 状态及完成后的事件结果。
+
+RAG 完成事件包含 `citations`，每项提供 `source`、`chunkId` 和截断后的 `snippet`，便于前端展示引用来源。
+
 ## 测试
 
 ```bash
