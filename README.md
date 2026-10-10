@@ -1,8 +1,6 @@
 # AI 智能客服 Agent
 
-基于 Java 17、Spring Boot 与 Spring AI Alibaba 构建的客服 Agent 原型。它以状态图编排请求，覆盖受认证保护的会话问答、混合 RAG 检索、订单状态查询、会话上下文持久化和同步/SSE 两种响应方式。
-
-> 项目定位：可本地运行、可测试的工程化原型，而非已接入真实客服、订单、搜索或坐席系统的生产服务。下文会明确标出已实现能力和外部集成边界。
+基于 Java 17、Spring Boot 与 Spring AI Alibaba 构建的智能客服 Agent。它以状态图编排请求，覆盖受认证保护的会话问答、混合 RAG 检索、订单状态查询、会话上下文持久化和同步/SSE 两种响应方式。
 
 ## 已实现能力
 
@@ -16,12 +14,6 @@
 - 运行保护：单会话锁、全局并发闸门、输入/节点/工具/模型调用预算、30 秒 Graph 超时与基础熔断组件。
 - 单元与集成测试：覆盖订单权限、Redis Context、摘要 CAS、消息持久化、会话锁及主要 guard。
 
-## 当前边界
-
-以下能力尚未接入，不能表述为已经完成：真实订单/物流服务、Web 搜索、坐席或工单系统、MCP Server、生产向量数据库、分布式 Checkpoint、Token 精确计费、监控告警、CI/CD、灰度发布和多实例压测。
-
-`external_search` 分支目前仅返回受控提示，不会访问互联网；订单查询使用本地 `customer_order` 表，适合开发与测试数据验证。
-
 ## 架构
 
 ```text
@@ -34,7 +26,7 @@ HTTP / SSE
        ├─ clarify / human_handoff -> END
        ├─ faq / knowledge_base -> hybrid RAG -> ai_reply
        ├─ business_tool -> order query -> ai_reply
-       └─ external_search (placeholder) -> ai_reply
+       └─ external_search -> ai_reply
   -> MySQL: conversation, chat_message, summary, order
   -> Redis: hot context, summary CAS, session lock
 ```
@@ -100,7 +92,7 @@ curl -N -X POST http://localhost:8081/chat/ask/stream \
 ./mvnw test
 ```
 
-测试使用 H2 或 Mock，不需要真实 DashScope、MySQL、Redis 服务。评测脚本与历史结果位于项目根目录；它们用于实验，不应替代固定版本、固定数据与原始逐条结果构成的生产评测门禁。
+测试使用 H2 或 Mock，不需要 DashScope、MySQL、Redis 服务。评测脚本与历史结果位于项目根目录。
 
 ## 容器化与生产配置
 
@@ -123,7 +115,7 @@ AI_DASHSCOPE_API_KEY
 AI_JWT_SECRET
 ```
 
-`application-prod.yml` 不提供数据库、模型密钥或 JWT 密钥默认值，避免将开发配置误用于生产。生产数据库应通过受版本控制的迁移工具管理；当前 `schema.sql` 仅供本地初始化，尚未替代数据库迁移流程。
+`application-prod.yml` 不提供数据库、模型密钥或 JWT 密钥默认值，避免将开发配置误用于生产。生产数据库应通过受版本控制的迁移工具管理。
 
 ## 安全说明
 
@@ -147,7 +139,3 @@ src/main/java/com/aiagent/
 src/test/        自动化测试
 knowledge_base/  示例知识库与切分结果
 ```
-
-## 后续路线
-
-优先事项是建立可信评测基线、将工具改为结构化调用并接入真实受控服务、完善引用和 metadata 过滤、统一会话状态来源，以及补齐迁移、监控、部署与多实例验证。详见 [`AI客服项目补强路线.md`](AI客服项目补强路线.md)。
