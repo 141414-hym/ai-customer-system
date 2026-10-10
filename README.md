@@ -10,7 +10,11 @@
 - Graph 路由：规则与 LLM 两路融合，将请求分发至 FAQ、知识库、订单工具、补问、人工转接或外部搜索分支。
 - RAG：查询清洗、查询改写、向量检索与 BM25 双路召回、RRF 融合、可选 DashScope Rerank 和证据充分性门控。
 - 工具：订单号格式校验、从认证上下文取得用户身份，并以 `userId + orderNo` 查询本地 MySQL 订单数据。
-- 会话数据：MySQL 持久化会话及消息；Redis 缓存热上下文和摘要版本；Graph 文件 Checkpoint 用于本地开发调试。
+- 会话与任务数据：MySQL 持久化会话、消息、摘要、人工转接工单和异步任务状态；Redis 缓存热上下文和摘要版本。
+- 数据库迁移：Flyway 管理版本化表结构，应用启动时自动执行迁移。
+- 知识隔离：检索链路根据 `tenantId`、`productCode`、`locale` 过滤带范围 metadata 的知识块。
+- 可观测性：Actuator 健康探针、Prometheus 指标、Trace/Span 响应头，以及聊天成功/失败/耗时指标。
+- 持续验证：GitHub Actions 在推送和 Pull Request 时执行 Maven `verify`。
 - 运行保护：单会话锁、全局并发闸门、输入/节点/工具/模型调用预算、30 秒 Graph 超时与基础熔断组件。
 - 单元与集成测试：覆盖订单权限、Redis Context、摘要 CAS、消息持久化、会话锁及主要 guard。
 
@@ -27,7 +31,7 @@ HTTP / SSE
        ├─ faq / knowledge_base -> hybrid RAG -> ai_reply
        ├─ business_tool -> order query -> ai_reply
        └─ external_search -> ai_reply
-  -> MySQL: conversation, chat_message, summary, order
+  -> MySQL: conversation, chat_message, summary, agent_task, handoff_ticket, order
   -> Redis: hot context, summary CAS, session lock
 ```
 
@@ -52,15 +56,13 @@ HTTP / SSE
    export AI_JWT_SECRET='at-least-32-characters-development-secret'
    ```
 
-3. 首次为本地 MySQL 执行 [`schema.sql`](src/main/resources/schema.sql) 建表，并准备 `customer_order` 测试数据。
-
-4. 启动服务：
+3. 启动服务：
 
    ```bash
    ./mvnw spring-boot:run
    ```
 
-开发默认端口为 `8081`。健康检查：`GET /actuator/health`。
+开发默认端口为 `8081`。Flyway 会自动执行数据库迁移。健康检查：`GET /actuator/health`，Prometheus 指标：`GET /actuator/prometheus`。
 
 ## 调用接口
 
@@ -88,7 +90,7 @@ curl -N -X POST http://localhost:8081/chat/ask/stream \
 
 ### 异步任务
 
-`POST /chat/tasks` 使用与同步问答相同的请求体，立即返回 `taskId`；随后可通过 `GET /chat/tasks/{taskId}` 查询 `QUEUED`、`RUNNING`、`COMPLETED` 或 `FAILED` 状态及完成后的事件结果。
+`POST /chat/tasks` 使用与同步问答相同的请求体，立即返回 `taskId`；随后可通过 `GET /chat/tasks/{taskId}` 查询 `QUEUED`、`RUNNING`、`COMPLETED` 或 `FAILED` 状态及完成后的事件结果。任务状态、结果与失败码会写入 MySQL。
 
 RAG 完成事件包含 `citations`，每项提供 `source`、`chunkId` 和截断后的 `snippet`，便于前端展示引用来源。
 
@@ -98,7 +100,7 @@ RAG 完成事件包含 `citations`，每项提供 `source`、`chunkId` 和截断
 ./mvnw test
 ```
 
-测试使用 H2 或 Mock，不需要 DashScope、MySQL、Redis 服务。评测脚本与历史结果位于项目根目录。
+测试使用 H2 或 Mock，不需要 DashScope、MySQL、Redis 服务。评测脚本与历史结果位于项目根目录；GitHub Actions 会自动执行 `./mvnw --batch-mode verify`。
 
 ## 容器化与生产配置
 
@@ -119,6 +121,7 @@ DB_PASSWORD
 REDIS_HOST
 AI_DASHSCOPE_API_KEY
 AI_JWT_SECRET
+AI_SEARCH_ENDPOINT
 ```
 
 `application-prod.yml` 不提供数据库、模型密钥或 JWT 密钥默认值，避免将开发配置误用于生产。生产数据库应通过受版本控制的迁移工具管理。
@@ -139,6 +142,10 @@ src/main/java/com/aiagent/
   guard/         预算、熔断、回答与工具保护
   memory/        Redis 上下文和摘要
   persistence/   MySQL 会话/消息持久化
+  task/          异步任务提交、状态与结果持久化
+  handoff/       人工转接工单服务
+  search/        外部搜索网关适配器
+  observability/ Trace 与 Prometheus 指标
   security/      JWT 与当前用户
   session/       SessionKey、Redis 锁和全局闸门
   tool/          订单查询工具
