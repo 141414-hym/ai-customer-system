@@ -35,6 +35,7 @@ import org.slf4j.LoggerFactory;
 import com.aiagent.observability.TraceIdFilter;
 import com.aiagent.guard.RunLimits;
 import com.aiagent.task.ChatTaskService;
+import com.aiagent.observability.ChatMetrics;
 
 @RestController
 @RequestMapping("/chat")
@@ -50,6 +51,7 @@ public class ChatController {
     private final GlobalExecutionGate globalExecutionGate;
     private final SummaryTrigger summaryTrigger;
     private final ChatTaskService chatTaskService;
+    private final ChatMetrics chatMetrics;
     private final RunLimits runLimits = RunLimits.defaults();
 
     public ChatController(CompiledGraph customerSupportGraph,
@@ -58,7 +60,8 @@ public class ChatController {
                           RedisContextStore contextStore,
                           DistributedSessionLock distributedSessionLock,
                           GlobalExecutionGate globalExecutionGate,
-                          SummaryTrigger summaryTrigger, ChatTaskService chatTaskService) {
+                          SummaryTrigger summaryTrigger, ChatTaskService chatTaskService,
+                          ChatMetrics chatMetrics) {
         this.customerSupportGraph = customerSupportGraph;
         this.currentUserProvider = currentUserProvider;
         this.messageRepository = messageRepository;
@@ -67,6 +70,7 @@ public class ChatController {
         this.globalExecutionGate = globalExecutionGate;
         this.summaryTrigger = summaryTrigger;
         this.chatTaskService = chatTaskService;
+        this.chatMetrics = chatMetrics;
     }
 
     @PostMapping(value = "/ask", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -157,11 +161,15 @@ public class ChatController {
                         }
                     })
                     .timeout(Duration.ofSeconds(30))
-                    .doOnComplete(() -> persistAssistantAnswer(sessionKey, runId, answer.get(), "COMPLETED"))
+                    .doOnComplete(() -> {
+                        persistAssistantAnswer(sessionKey, runId, answer.get(), "COMPLETED");
+                        chatMetrics.completed("graph", System.nanoTime() - graphStartNanos);
+                    })
                     .doOnError(error -> {
                         log.error("[chat_timing] traceId={} stage=graph_failed error={}",
                                 MDC.get(TraceIdFilter.TRACE_ID), error.toString());
                         persistAssistantAnswer(sessionKey, runId, "", "FAILED");
+                        chatMetrics.failed("graph");
                     });
             }).doFinally(signal -> distributedSessionLock.release(lease));
         });
